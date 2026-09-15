@@ -1,0 +1,11 @@
+<div class="header-row">
+  <h3>Directions</h3>
+  <app-voice-button [directions]="directions"></app-voice-button>
+</div>
+<mat-list>
+  <mat-list-item *ngFor="let step of directions; let i = index">
+    <mat-icon matListItemIcon>{{ getIconForInstruction(step.instruction) }}</mat-icon>
+    <div matListItemTitle>{{ step.instruction }}</div>
+    <div matListItemLine *ngIf="step.distance > 0">{{ step.distance | number:'1.0-0' }} m</div>
+  </mat-list-item>
+</mat-list>

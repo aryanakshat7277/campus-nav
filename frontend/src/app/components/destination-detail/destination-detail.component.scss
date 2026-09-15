@@ -1,0 +1,336 @@
+$primary: #1565C0;
+$secondary: #00897B;
+$bg-page: #F5F7FA;
+$text-primary: #1A1A2E;
+$text-secondary: #5F6368;
+$border: #E0E0E0;
+
+.destination-detail-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 16px 20px 48px;
+}
+
+.top-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .nav-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+}
+
+.destination-card {
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid $border;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+
+  .hero-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    background: #ECEFF1;
+
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 16px 20px;
+
+      .category-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: $primary;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .verified-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255,255,255,0.92);
+        color: #1A1A2E;
+        padding: 4px 10px;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 700;
+
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+          color: $primary;
+        }
+      }
+    }
+  }
+
+  .card-content-body {
+    padding: 24px;
+  }
+}
+
+.dest-header {
+  margin-bottom: 20px;
+
+  .dept-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: $secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 800;
+    color: $text-primary;
+    line-height: 1.25;
+  }
+
+  .location-crumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 13px;
+    color: $text-secondary;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $primary;
+    }
+
+    .floor-tag, .room-tag, .wing-tag {
+      font-weight: 600;
+      color: $text-primary;
+    }
+
+    .dot {
+      color: #B0BEC5;
+    }
+  }
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+
+  .metric-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #F8F9FA;
+    border: 1px solid #ECEFF1;
+    border-radius: 12px;
+    padding: 12px 14px;
+
+    .icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+
+      &.blue { color: $primary; }
+      &.teal { color: $secondary; }
+      &.green { color: #2E7D32; }
+      &.amber { color: #E65100; }
+    }
+
+    .metric-text {
+      display: flex;
+      flex-direction: column;
+
+      .val {
+        font-size: 15px;
+        font-weight: 800;
+        color: $text-primary;
+      }
+
+      .lbl {
+        font-size: 11px;
+        color: $text-secondary;
+      }
+    }
+
+    &.accessible-box {
+      border-color: #C8E6C9;
+      background: #F1F8E9;
+    }
+  }
+}
+
+.section-block {
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  .description-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: $text-secondary;
+  }
+}
+
+.amenities-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .amenity-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #E8F0FE;
+    color: $primary;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 16px;
+
+    mat-icon {
+      font-size: 15px;
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+.details-block {
+  background: #FAFAFA;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #EEEEEE;
+
+  .meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 4px 0;
+      border-bottom: 1px dashed #E0E0E0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .label-wrap {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: $text-secondary;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          color: #78909C;
+        }
+      }
+
+      .val-wrap {
+        color: $text-primary;
+        text-align: right;
+
+        &.font-bold {
+          font-weight: 700;
+        }
+
+        a {
+          color: $primary;
+          text-decoration: none;
+          font-weight: 600;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+.action-footer {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .primary-nav-btn {
+    height: 52px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 14px rgba(21, 101, 192, 0.3);
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .secondary-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    button {
+      flex: 1;
+      height: 42px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+
+      mat-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}

@@ -1,0 +1,473 @@
+<div class="indoor-nav-view">
+  <!-- Top Navigation Bar -->
+  <header class="indoor-header">
+    <button mat-icon-button routerLink="/" matTooltip="Exit Navigation" aria-label="Exit Navigation">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="dest-meta">
+      <h2 class="dest-title">{{ destinationName }}</h2>
+      <div class="dest-badges">
+        <span class="badge building"><mat-icon>apartment</mat-icon> {{ buildingName }}</span>
+        <span class="badge floor"><mat-icon>layers</mat-icon> Target Floor {{ targetFloor }}</span>
+        <span class="badge access"><mat-icon>accessible</mat-icon> Step-free Route</span>
+      </div>
+    </div>
+
+    <!-- 2D Blueprint vs 2.5D Isometric Mode Toggle -->
+    <div class="view-mode-toggle">
+      <button 
+        type="button"
+        class="toggle-btn" 
+        [class.active]="viewMode === 'blueprint'" 
+        (click)="toggleViewMode('blueprint')"
+        matTooltip="2D Precision CAD Architectural Blueprint">
+        <mat-icon>architecture</mat-icon>
+        <span>Blueprint</span>
+      </button>
+      <button 
+        type="button"
+        class="toggle-btn" 
+        [class.active]="viewMode === 'isometric'" 
+        (click)="toggleViewMode('isometric')"
+        matTooltip="2.5D Isometric 3D Architectural Model">
+        <mat-icon>view_in_ar</mat-icon>
+        <span>2.5D Isometric</span>
+      </button>
+    </div>
+
+    <div class="header-right">
+      <div class="confidence-pill" [ngClass]="confidenceState.toLowerCase()" matTooltip="Multi-Sensor Fusion Confidence">
+        <span class="dot">●</span>
+        <span class="text">{{ confidenceState === 'CONFIRMED' ? 'Confirmed' : confidenceState === 'ESTIMATED' ? 'Estimated' : 'Uncertain' }} ({{ confidencePercentage }}%)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Route Deviation Recalculation Alert -->
+  <div class="deviation-banner" *ngIf="deviationAlert">
+    <mat-icon>sync</mat-icon>
+    <span>{{ deviationAlert }}</span>
+  </div>
+
+  <!-- Interactive Elevator Sequence Overlay -->
+  <div class="elevator-overlay" *ngIf="isElevatorActive">
+    <div class="elevator-card">
+      <div class="elevator-shaft-header">
+        <mat-icon>elevator</mat-icon>
+        <span>NORTH GLASS ELEVATOR • SMART DISPATCH</span>
+      </div>
+      
+      <div class="elevator-display-screen">
+        <div class="led-arrow">▲</div>
+        <div class="led-floor">{{ elevatorFloorDisplay }}</div>
+        <div class="led-subtext">{{ elevatorStatusText }}</div>
+      </div>
+
+      <!-- Realistic Sliding Stainless Steel Doors -->
+      <div class="elevator-cabin">
+        <div class="door door-left" [class.doors-closed]="elevatorDoorState === 'closed'">
+          <div class="door-groove"></div>
+        </div>
+        <div class="door door-right" [class.doors-closed]="elevatorDoorState === 'closed'">
+          <div class="door-groove"></div>
+        </div>
+        <div class="cabin-interior">
+          <mat-icon class="cabin-avatar">accessibility_new</mat-icon>
+          <span>Wheelchair Accessible Cabin • Speed 1.0 m/s</span>
+        </div>
+      </div>
+
+      <div class="elevator-footer">
+        <span class="sensor-sync"><mat-icon>wifi_tethering</mat-icon> Barometer + Beacon Floor Verification Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Destination Arrival Celebration Modal -->
+  <div class="arrival-modal-overlay" *ngIf="showArrivalModal">
+    <!-- Animated Confetti Particles -->
+    <div class="confetti-container">
+      <div 
+        class="confetti-piece" 
+        *ngFor="let piece of confettiPieces"
+        [style.left.%]="piece.left"
+        [style.animation-delay.s]="piece.delay"
+        [style.background-color]="piece.color"
+        [style.width.px]="piece.size"
+        [style.height.px]="piece.size * 1.6">
+      </div>
+    </div>
+
+    <div class="arrival-card">
+      <div class="trophy-badge">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <h3>Destination Reached!</h3>
+      <h2 class="arrived-dest-name">{{ destinationName }}</h2>
+      <p class="arrived-sub">{{ buildingName }} • Floor 2 (North Wing)</p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="s-val">145m</span>
+          <span class="s-lbl">Distance Walked</span>
+        </div>
+        <div class="stat-box">
+          <span class="s-val">2m 45s</span>
+          <span class="s-lbl">Total Time</span>
+        </div>
+        <div class="stat-box">
+          <span class="s-val">0 Stairs</span>
+          <span class="s-lbl">100% Accessible</span>
+        </div>
+        <div class="stat-box">
+          <span class="s-val">±0.8m</span>
+          <span class="s-lbl">Wi-Fi RTT Accuracy</span>
+        </div>
+      </div>
+
+      <div class="arrival-actions">
+        <button mat-raised-button color="primary" class="primary-btn" (click)="closeArrivalModal()">
+          <mat-icon>visibility</mat-icon> Explore Lab & Facilities
+        </button>
+        <button mat-stroked-button class="secondary-btn" routerLink="/">
+          <mat-icon>home</mat-icon> Return to Campus Map
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Viewport: 2D Blueprint vs 2.5D Isometric Model -->
+  <main class="indoor-viewport">
+    <div class="floorplan-area">
+      <!-- Floor Switcher Bar -->
+      <div class="floor-selector-bar">
+        <span class="bar-title">LEVEL:</span>
+        <div class="floor-pill-group">
+          <button 
+            type="button" 
+            class="floor-pill" 
+            *ngFor="let f of availableFloors" 
+            [class.active]="currentFloor === f.num"
+            (click)="switchFloor(f.num)"
+            [matTooltip]="f.name">
+            {{ f.label }}
+          </button>
+        </div>
+
+        <div class="level-meta">
+          <span>FLOOR {{ currentFloor === -1 ? 'B (Basement)' : currentFloor === 0 ? 'G (Ground)' : currentFloor }}</span>
+          <span class="floor-badge-dot">● Active CAD Model</span>
+        </div>
+      </div>
+
+      <!-- Architectural Floorplan Canvas Container -->
+      <div class="floorplan-container" [ngClass]="viewMode">
+        <div class="floorplan-card">
+          <!-- Vector SVG Architectural CAD Floorplan -->
+          <svg class="blueprint-svg" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- CAD Grid Pattern -->
+              <pattern id="cadGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#E2E8F0" stroke-width="0.8"/>
+              </pattern>
+
+              <!-- Flashlight Compass Beam Gradient -->
+              <radialGradient id="flashlightGrad" cx="50%" cy="100%" r="90%">
+                <stop offset="0%" stop-color="#1565C0" stop-opacity="0.38"/>
+                <stop offset="60%" stop-color="#2196F3" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#2196F3" stop-opacity="0"/>
+              </radialGradient>
+
+              <!-- Glowing Path Filter -->
+              <filter id="corridorGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Background with Architectural Grid -->
+            <rect width="800" height="480" fill="#F8FAFC"/>
+            <rect width="800" height="480" fill="url(#cadGrid)"/>
+
+            <!-- Outer Building Walls (Double Architectural Outline) -->
+            <rect x="50" y="50" width="700" height="380" rx="8" fill="#FFFFFF" stroke="#334155" stroke-width="3"/>
+            <rect x="56" y="56" width="688" height="368" rx="6" fill="none" stroke="#94A3B8" stroke-width="1" stroke-dasharray="4 2"/>
+
+            <!-- ================= GROUND FLOOR ROOMS (Floor 0) ================= -->
+            <g *ngIf="currentFloor <= 0">
+              <!-- Porch Entrance (South) -->
+              <rect x="330" y="390" width="140" height="40" fill="#E2E8F0" stroke="#475569" stroke-width="2"/>
+              <text x="400" y="415" text-anchor="middle" class="cad-text-bold">MAIN PORCH &amp; SECURITY FOYER</text>
+
+              <!-- Chemistry Lab (A-001) -->
+              <rect x="70" y="70" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="75" y="75" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="102" y="89" text-anchor="middle" class="cad-room-code">A-001</text>
+              <text x="180" y="140" text-anchor="middle" class="cad-room-title">Chemistry Research Lab</text>
+
+              <!-- Physics Lab (A-002) -->
+              <rect x="70" y="250" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="75" y="255" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="102" y="269" text-anchor="middle" class="cad-room-code">A-002</text>
+              <text x="180" y="320" text-anchor="middle" class="cad-room-title">Physics &amp; Optics Lab</text>
+
+              <!-- Admin Foyer (A-003) -->
+              <rect x="510" y="70" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="515" y="75" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="542" y="89" text-anchor="middle" class="cad-room-code">A-003</text>
+              <text x="620" y="140" text-anchor="middle" class="cad-room-title">Dean Office &amp; Reception</text>
+
+              <!-- Staff Room (A-004) -->
+              <rect x="510" y="250" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="515" y="255" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="542" y="269" text-anchor="middle" class="cad-room-code">A-004</text>
+              <text x="620" y="320" text-anchor="middle" class="cad-room-title">Faculty Room &amp; Council</text>
+            </g>
+
+            <!-- ================= FLOOR 1 ROOMS ================= -->
+            <g *ngIf="currentFloor === 1">
+              <rect x="70" y="70" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <text x="180" y="140" text-anchor="middle" class="cad-room-title">A-101 Seminar Hall</text>
+
+              <rect x="70" y="250" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <text x="180" y="320" text-anchor="middle" class="cad-room-title">A-102 Faculty Lounge</text>
+
+              <rect x="510" y="70" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <text x="620" y="140" text-anchor="middle" class="cad-room-title">LRC-101 Digital Library</text>
+
+              <rect x="510" y="250" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <text x="620" y="320" text-anchor="middle" class="cad-room-title">A-103 High-Density Server</text>
+            </g>
+
+            <!-- ================= FLOOR 2 ROOMS (Target Floor) ================= -->
+            <g *ngIf="currentFloor >= 2">
+              <!-- Room C-201 -->
+              <rect x="70" y="70" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="75" y="75" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="102" y="89" text-anchor="middle" class="cad-room-code">C-201</text>
+              <text x="180" y="140" text-anchor="middle" class="cad-room-title">Advanced Networks Lab</text>
+
+              <!-- Room C-202 -->
+              <rect x="70" y="250" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="75" y="255" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="102" y="269" text-anchor="middle" class="cad-room-code">C-202</text>
+              <text x="180" y="320" text-anchor="middle" class="cad-room-title">Cloud Computing Center</text>
+
+              <!-- Room C-203 -->
+              <rect x="510" y="70" width="220" height="130" rx="4" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+              <rect x="515" y="75" width="55" height="20" rx="3" fill="#E2E8F0"/>
+              <text x="542" y="89" text-anchor="middle" class="cad-room-code">C-203</text>
+              <text x="620" y="140" text-anchor="middle" class="cad-room-title">Machine Learning Lab</text>
+
+              <!-- Room C-204 (TARGET DESTINATION - HIGHLIGHTED) -->
+              <rect x="510" y="250" width="220" height="130" rx="4" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3" class="target-room-rect"/>
+              <rect x="515" y="255" width="60" height="22" rx="3" fill="#2E7D32"/>
+              <text x="545" y="271" text-anchor="middle" class="cad-room-code active">C-204</text>
+              <text x="620" y="315" text-anchor="middle" class="cad-room-title target">★ Advanced AI &amp; Cloud Lab</text>
+              <text x="620" y="335" text-anchor="middle" class="cad-sub-target">Final Navigation Target</text>
+
+              <!-- Restrooms & Water Cooler Niche -->
+              <rect x="295" y="235" width="40" height="30" fill="#E0F2FE" stroke="#0284C7" stroke-width="1.5" rx="3"/>
+              <text x="315" y="253" text-anchor="middle" class="cad-tiny">WC / H2O</text>
+            </g>
+
+            <!-- ================= CENTRAL VERTICAL CORE ================= -->
+            <!-- North Glass Elevator Shaft -->
+            <rect x="350" y="70" width="100" height="85" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2" rx="4"/>
+            <!-- Elevator Cross Lines -->
+            <line x1="350" y1="70" x2="450" y2="155" stroke="#C7D2FE" stroke-width="1.5"/>
+            <line x1="450" y1="70" x2="350" y2="155" stroke="#C7D2FE" stroke-width="1.5"/>
+            <rect x="365" y="95" width="70" height="35" rx="4" fill="#4F46E5"/>
+            <text x="400" y="117" text-anchor="middle" fill="#FFFFFF" font-size="11" font-weight="700">NORTH LIFT</text>
+
+            <!-- Central Staircase -->
+            <rect x="350" y="260" width="100" height="85" fill="#F8FAFC" stroke="#64748B" stroke-width="2" rx="4"/>
+            <!-- Stair Treads -->
+            <line x1="350" y1="275" x2="450" y2="275" stroke="#94A3B8" stroke-width="1.5"/>
+            <line x1="350" y1="290" x2="450" y2="290" stroke="#94A3B8" stroke-width="1.5"/>
+            <line x1="350" y1="305" x2="450" y2="305" stroke="#94A3B8" stroke-width="1.5"/>
+            <line x1="350" y1="320" x2="450" y2="320" stroke="#94A3B8" stroke-width="1.5"/>
+            <line x1="350" y1="335" x2="450" y2="335" stroke="#94A3B8" stroke-width="1.5"/>
+            <text x="400" y="270" text-anchor="middle" class="cad-tiny">CENTRAL STAIRS</text>
+
+            <!-- Central Corridors Guidelines -->
+            <path d="M 50 240 L 750 240" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="6 4"/>
+            <path d="M 400 155 L 400 390" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="6 4"/>
+
+            <!-- ================= ILLUMINATED ROUTE PATH ================= -->
+            <!-- Floor 0 Segment: Porch to Elevator -->
+            <path 
+              *ngIf="currentFloor <= 0" 
+              d="M 400 410 L 400 240 L 400 130" 
+              fill="none" 
+              stroke="#1565C0" 
+              stroke-width="5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              stroke-dasharray="10 8" 
+              class="flowing-route-path"
+              filter="url(#corridorGlow)"/>
+
+            <!-- Floor 2 Segment: Elevator Landing into Room C-204 -->
+            <path 
+              *ngIf="currentFloor >= 2" 
+              d="M 400 130 L 400 240 L 620 240 L 620 310" 
+              fill="none" 
+              stroke="#1565C0" 
+              stroke-width="5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+              stroke-dasharray="10 8" 
+              class="flowing-route-path"
+              filter="url(#corridorGlow)"/>
+
+            <!-- Waypoint Turn Node Dots -->
+            <circle *ngIf="currentFloor <= 0" cx="400" cy="240" r="5" fill="#1565C0"/>
+            <circle *ngIf="currentFloor >= 2" cx="400" cy="240" r="5" fill="#1565C0"/>
+            <circle *ngIf="currentFloor >= 2" cx="620" cy="240" r="5" fill="#1565C0"/>
+
+            <!-- Destination Pin on Floor 2 -->
+            <g *ngIf="currentFloor >= 2" transform="translate(620, 310)">
+              <circle cx="0" cy="0" r="14" fill="#2E7D32" opacity="0.2" class="dest-ring-pulse"/>
+              <circle cx="0" cy="0" r="8" fill="#2E7D32"/>
+              <circle cx="0" cy="0" r="4" fill="#FFFFFF"/>
+            </g>
+
+            <!-- ================= DYNAMIC USER AVATAR & FLASHLIGHT ================= -->
+            <g [attr.transform]="'translate(' + getUserAvatarX() + ',' + getUserAvatarY() + ')'" class="user-avatar-group">
+              <!-- Magnetometer Flashlight Beam -->
+              <g [attr.transform]="'rotate(' + getUserHeading() + ')'">
+                <polygon points="0,0 -40,-110 40,-110" fill="url(#flashlightGrad)"/>
+                <line x1="0" y1="0" x2="0" y2="-90" stroke="#2196F3" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+              </g>
+
+              <!-- Concentric Signal Pulse -->
+              <circle cx="0" cy="0" r="24" fill="#1565C0" opacity="0.15" class="user-pulse-outer"/>
+              <circle cx="0" cy="0" r="15" fill="#1565C0" opacity="0.3" class="user-pulse-inner"/>
+
+              <!-- Central User Marker -->
+              <circle cx="0" cy="0" r="9" fill="#1565C0" stroke="#FFFFFF" stroke-width="2.5" class="user-center-dot"/>
+
+              <!-- Direction Pointer Triangle -->
+              <polygon 
+                points="0,-14 -4,-7 4,-7" 
+                fill="#1565C0" 
+                [attr.transform]="'rotate(' + getUserHeading() + ')'"/>
+
+              <!-- User Tag -->
+              <text x="0" y="24" text-anchor="middle" class="avatar-tag">YOU (RTT + SENSORS)</text>
+            </g>
+          </svg>
+
+          <!-- Waypoint Landmark Tag -->
+          <div class="landmark-tag" *ngIf="currentStep.landmark">
+            <mat-icon>storefront</mat-icon>
+            <span>Landmark Anchor: <strong>{{ currentStep.landmark }}</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls Row: Recenter, Simulation, Elevator Ride, Voice, QR, Diagnostics -->
+    <div class="viewport-controls">
+      <button mat-mini-fab color="primary" (click)="recenter()" matTooltip="Recenter on Current Position">
+        <mat-icon>my_location</mat-icon>
+      </button>
+
+      <button mat-mini-fab color="primary" (click)="toggleSimulation()" [matTooltip]="isSimulating ? 'Pause Walk' : 'Play Walk'">
+        <mat-icon>{{ isSimulating ? 'pause' : 'play_arrow' }}</mat-icon>
+      </button>
+
+      <!-- Specialized Interactive Elevator Ride Action -->
+      <button 
+        *ngIf="currentStep.type === 'elevator'"
+        mat-raised-button 
+        color="accent" 
+        class="ride-elevator-btn"
+        (click)="startElevatorRide()" 
+        matTooltip="Ride Elevator to Floor 2">
+        <mat-icon>elevator</mat-icon>
+        <span>Ride North Elevator</span>
+      </button>
+
+      <button mat-mini-fab color="accent" (click)="toggleVoice()" [matTooltip]="isVoiceActive ? 'Mute Voice' : 'Unmute Voice'">
+        <mat-icon>{{ isVoiceActive ? 'volume_up' : 'volume_off' }}</mat-icon>
+      </button>
+
+      <button mat-mini-fab color="basic" routerLink="/qr-scanner" matTooltip="Scan Wall QR Checkpoint">
+        <mat-icon>qr_code_scanner</mat-icon>
+      </button>
+
+      <button mat-mini-fab color="basic" routerLink="/admin/diagnostics" matTooltip="Signal Diagnostics">
+        <mat-icon>query_stats</mat-icon>
+      </button>
+
+      <button mat-mini-fab color="basic" routerLink="/route-options" matTooltip="Route Preferences">
+        <mat-icon>tune</mat-icon>
+      </button>
+    </div>
+  </main>
+
+  <!-- Bottom Turn-by-Turn Instruction Card -->
+  <footer class="indoor-footer">
+    <div class="step-card" [class.arrived-state]="hasArrived">
+      <div class="step-progress-bar">
+        <mat-progress-bar mode="determinate" [value]="((currentStepIndex + 1) / steps.length) * 100"></mat-progress-bar>
+      </div>
+
+      <div class="step-main">
+        <div class="direction-icon-container" [ngClass]="currentStep.type">
+          <mat-icon class="turn-icon">{{ currentStep.actionIcon }}</mat-icon>
+        </div>
+
+        <div class="instruction-content">
+          <div class="step-count">
+            <span>STEP {{ currentStepIndex + 1 }} OF {{ steps.length }}</span>
+            <!-- Live Audio Waveform Equalizer -->
+            <div class="voice-equalizer" *ngIf="isSpeaking">
+              <span class="eq-bar b1"></span>
+              <span class="eq-bar b2"></span>
+              <span class="eq-bar b3"></span>
+              <span class="eq-bar b4"></span>
+              <span class="eq-bar b5"></span>
+              <span class="eq-label">Voice Guide Active</span>
+            </div>
+          </div>
+          <h3 class="instruction-headline">{{ currentStep.instruction }}</h3>
+          <p class="instruction-subtext">{{ currentStep.subtext }}</p>
+        </div>
+
+        <div class="step-metrics">
+          <div class="metric-dist">{{ currentStep.distance }}m</div>
+          <div class="metric-time">~{{ currentStep.timeSeconds }}s</div>
+        </div>
+      </div>
+
+      <!-- Floor transition prompt -->
+      <div class="floor-transition-banner" *ngIf="currentStep.type === 'elevator' || currentStep.type === 'stairs'">
+        <mat-icon>arrow_upward</mat-icon>
+        <span>Transitioning: Ascend to Floor {{ targetFloor }} using North Elevator (Accessible route). Tap "Ride North Elevator" above.</span>
+      </div>
+
+      <!-- Stepper Controls & Route Summary -->
+      <div class="step-footer-controls">
+        <div class="trip-summary">
+          <span class="sum-item"><mat-icon>schedule</mat-icon> ~{{ estimatedMinutes }} min remaining</span>
+          <span class="sum-item"><mat-icon>straighten</mat-icon> {{ totalDistance }} meters total</span>
+        </div>
+
+        <div class="stepper-buttons">
+          <button mat-stroked-button (click)="prevStep()" [disabled]="currentStepIndex === 0">
+            <mat-icon>navigate_before</mat-icon> Previous
+          </button>
+          <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="currentStepIndex === steps.length - 1">
+            Next Step <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

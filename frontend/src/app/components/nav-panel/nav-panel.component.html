@@ -1,0 +1,54 @@
+<mat-card class="nav-panel-card" [class.collapsed]="!expanded" [class.has-route]="!!route">
+  <!-- Interactive Handle & Header -->
+  <div class="panel-header-toggle" (click)="toggleExpand()">
+    <div class="header-left">
+      <mat-icon class="panel-main-icon" color="primary">{{ route ? 'alt_route' : 'directions' }}</mat-icon>
+      <div class="header-titles">
+        <span class="panel-title">{{ route ? 'Route Calculated' : 'Campus Route Planner' }}</span>
+        <span class="panel-subtitle" *ngIf="!expanded && route">{{ route.distance }}m • ~{{ route.estimatedTime }}</span>
+        <span class="panel-subtitle" *ngIf="!expanded && !route">Tap to choose start &amp; destination</span>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <button mat-icon-button (click)="clear(); $event.stopPropagation()" *ngIf="startLoc || endLoc || route" matTooltip="Clear route">
+        <mat-icon>close</mat-icon>
+      </button>
+      <button mat-icon-button class="expand-btn">
+        <mat-icon>{{ expanded ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <div class="panel-content" *ngIf="expanded">
+    <div class="inputs">
+      <div class="input-row">
+        <mat-icon class="loc-icon start-icon">my_location</mat-icon>
+        <div class="fake-input" [class.empty]="!startLoc">{{ startLoc ? startLoc.name : 'Choose starting location (or click map)' }}</div>
+      </div>
+      <button mat-icon-button class="swap-btn" (click)="swap()" matTooltip="Swap start and destination">
+        <mat-icon>swap_vert</mat-icon>
+      </button>
+      <div class="input-row">
+        <mat-icon class="loc-icon end-icon">place</mat-icon>
+        <div class="fake-input" [class.empty]="!endLoc">{{ endLoc ? endLoc.name : 'Choose destination (or click map)' }}</div>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <app-access-toggle></app-access-toggle>
+      <button mat-raised-button color="primary" class="full-width get-dir-btn" [disabled]="!startLoc || !endLoc" (click)="getDirections()">
+        <mat-icon>navigation</mat-icon> Calculate Campus Route
+      </button>
+    </div>
+  </div>
+
+  <!-- Route Details when Calculated -->
+  <div class="route-details-panel" *ngIf="route && expanded">
+    <app-route-info [route]="route"></app-route-info>
+    <app-directions-list [directions]="route.directions"></app-directions-list>
+    <button mat-stroked-button color="warn" class="full-width mt-12" (click)="clear()">
+      <mat-icon>close</mat-icon> Exit Route
+    </button>
+  </div>
+</mat-card>

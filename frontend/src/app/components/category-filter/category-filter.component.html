@@ -1,0 +1,11 @@
+<div class="category-scroll">
+  <mat-chip-listbox>
+    <mat-chip-option [selected]="activeCategory === null" (click)="toggleCategory(null)">
+      All
+    </mat-chip-option>
+    <mat-chip-option *ngFor="let cat of categories" [selected]="activeCategory === cat.id" (click)="toggleCategory(cat.id)" [style.--chip-color]="cat.color">
+      <mat-icon matChipAvatar>{{ cat.icon }}</mat-icon>
+      {{ cat.label }}
+    </mat-chip-option>
+  </mat-chip-listbox>
+</div>

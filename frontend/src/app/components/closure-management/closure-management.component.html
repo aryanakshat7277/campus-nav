@@ -1,0 +1,90 @@
+<div class="mgmt-view">
+  <header class="mgmt-header">
+    <div class="title-wrap">
+      <h2>🚧 Dynamic Route Closures & Blockages</h2>
+      <p>Configure temporary maintenance, construction, and pathway blocks for real-time A* pathfinding rerouting</p>
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary">
+        <mat-icon>add_road</mat-icon> Report New Closure
+      </button>
+    </div>
+  </header>
+
+  <mat-card class="table-card">
+    <div class="stats-row">
+      <div class="stat"><span class="v danger">3 Active</span><span class="l">Current Closures</span></div>
+      <div class="stat"><span class="v success">Dynamic Reroute</span><span class="l">A* Graph Penalty</span></div>
+      <div class="stat"><span class="v">1 Maintenance</span><span class="l">Elevator Servicing</span></div>
+      <div class="stat"><span class="v">Zero Dead-Ends</span><span class="l">Guaranteed Alternative</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <table mat-table [dataSource]="closures" class="mgmt-table">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>Closure ID</th>
+          <td mat-cell *matCellDef="let c">
+            <strong>{{ c.id }}</strong>
+            <div class="edge-str">Edge: {{ c.edgeId }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reason">
+          <th mat-header-cell *matHeaderCellDef>Reason & Scope</th>
+          <td mat-cell *matCellDef="let c">
+            <div class="reason-title">{{ c.reason }}</div>
+            <div class="date-sub">{{ c.startDate }} — {{ c.endDate }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let c">
+            <span class="type-pill" [ngClass]="c.closureType">{{ c.closureType | uppercase }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="location">
+          <th mat-header-cell *matHeaderCellDef>Affected Location</th>
+          <td mat-cell *matCellDef="let c">
+            <div>{{ c.location }}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reroute">
+          <th mat-header-cell *matHeaderCellDef>Dynamic Reroute Strategy</th>
+          <td mat-cell *matCellDef="let c">
+            <div class="reroute-box">
+              <mat-icon color="primary">alt_route</mat-icon>
+              <span>{{ c.alternativeRouteNote }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let c">
+            <span class="status-chip" [class.active]="c.isActive">
+              {{ c.isActive ? 'BLOCKING PATH' : 'CLEARED / OPEN' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="toggle">
+          <th mat-header-cell *matHeaderCellDef>Enforce</th>
+          <td mat-cell *matCellDef="let c">
+            <mat-slide-toggle 
+              [checked]="c.isActive" 
+              (change)="toggleClosure(c)" 
+              color="warn" 
+              matTooltip="Toggle closure on/off">
+            </mat-slide-toggle>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card>
+</div>

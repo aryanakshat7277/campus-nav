@@ -1,0 +1,19 @@
+<div class="search-container">
+  <div class="search-input-wrapper mat-elevation-z2">
+    <mat-icon class="search-icon">search</mat-icon>
+    <input type="text" [formControl]="searchControl" placeholder="Search buildings, rooms, services..." (focus)="showResults = results.length > 0">
+    <button mat-icon-button *ngIf="searchControl.value" (click)="clear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <mat-card class="results-card" *ngIf="showResults">
+    <mat-list>
+      <mat-list-item *ngFor="let res of results" (click)="selectResult(res)">
+        <mat-icon matListItemIcon [style.color]="getCategoryColor(res.category)">{{ getCategoryIcon(res.category) }}</mat-icon>
+        <div matListItemTitle>{{ res.name }}</div>
+        <div matListItemLine>Floor: {{ res.floor }}</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>

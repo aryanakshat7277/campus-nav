@@ -1,0 +1,33 @@
+.route-info-container {
+  padding: 16px;
+  background: rgba(0,0,0,0.02);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.dark-theme .route-info-container {
+  background: rgba(255,255,255,0.05);
+}
+.metrics {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  mat-icon { color: #555; }
+  .value { font-size: 1.2em; font-weight: 500; }
+}
+.dark-theme .metric mat-icon { color: #aaa; }
+.route-tags {
+  margin-top: 8px;
+}
+.acc-chip {
+  background-color: #e3f2fd !important;
+  color: #1976d2 !important;
+}
+.dark-theme .acc-chip {
+  background-color: #1976d2 !important;
+  color: #e3f2fd !important;
+}

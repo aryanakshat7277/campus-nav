@@ -1,0 +1,19 @@
+<div class="route-info-container" *ngIf="route">
+  <div class="metrics">
+    <div class="metric">
+      <mat-icon>directions_walk</mat-icon>
+      <span class="value">{{ route.estimatedTime }}</span>
+    </div>
+    <div class="metric">
+      <mat-icon>straighten</mat-icon>
+      <span class="value">{{ route.distance | number:'1.0-0' }} m</span>
+    </div>
+  </div>
+  
+  <mat-chip-set class="route-tags">
+    <mat-chip *ngIf="route.isAccessible" class="acc-chip" highlighted>
+      <mat-icon matChipAvatar>accessible</mat-icon>
+      Accessible
+    </mat-chip>
+  </mat-chip-set>
+</div>

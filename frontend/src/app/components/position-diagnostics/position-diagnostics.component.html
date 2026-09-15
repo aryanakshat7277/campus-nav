@@ -1,0 +1,389 @@
+<div class="diagnostics-view">
+  <header class="diag-header">
+    <div class="title-wrap">
+      <h2>📡 Indoor Positioning Diagnostics & Fusion Engine</h2>
+      <p>Real-time simulation telemetry from Wi-Fi RSSI, Wi-Fi RTT ranging, smartphone sensors, and QR checkpoints</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="accent" (click)="triggerQr()">
+        <mat-icon>qr_code</mat-icon> Trigger QR Calibration (100%)
+      </button>
+      <button mat-raised-button color="primary" (click)="toggleSimulation()">
+        <mat-icon>{{ isSimulating ? 'stop' : 'play_arrow' }}</mat-icon>
+        {{ isSimulating ? 'Stop Simulation' : 'Run Navigation Demo' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Deviation Banner if Active -->
+  <div class="deviation-banner" *ngIf="deviationAlert">
+    <mat-icon>alt_route</mat-icon>
+    <span>{{ deviationAlert }}</span>
+  </div>
+
+  <!-- Live Fusion State Banner -->
+  <div class="fusion-banner-card">
+    <div class="state-indicator" [ngClass]="confidenceState.toLowerCase()">
+      <div class="meter-circle">
+        <span class="pct">{{ confidencePercentage }}%</span>
+        <span class="lbl">FUSION</span>
+      </div>
+      <div class="state-text">
+        <div class="pill">
+          <span class="dot">●</span>
+          {{ confidenceState === 'CONFIRMED' ? 'Location Confirmed' : confidenceState === 'ESTIMATED' ? 'Location Estimated' : 'Location Accuracy Reduced' }}
+        </div>
+        <h3>{{ currentBuilding }} • Floor {{ currentFloor === 0 ? 'G (Ground)' : currentFloor }}</h3>
+        <p class="node-id"><mat-icon>place</mat-icon> Zone: <strong>{{ zone }}</strong> ({{ currentNode }})</p>
+      </div>
+    </div>
+
+    <div class="coords-telemetry">
+      <div class="telemetry-block">
+        <span class="t-lbl">LOCAL PLANAR GRID COORDINATES</span>
+        <span class="t-val code">{{ localCoords }}</span>
+      </div>
+      <div class="telemetry-block">
+        <span class="t-lbl">POSITIONING ARCHITECTURE</span>
+        <span class="t-val font-semibold">100% GPS-Free Indoor Signal Triangulation</span>
+      </div>
+      <div class="telemetry-block">
+        <span class="t-lbl">ESTIMATED WALKING CADENCE</span>
+        <span class="t-val">{{ walkingSpeed }} m/s ({{ stepCount }} cumulative steps)</span>
+      </div>
+      <div class="telemetry-block">
+        <span class="t-lbl">LAST TELEMETRY PACKET</span>
+        <span class="t-val">{{ lastUpdated }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 29 & 33: Position Sources & Fusion Engine Diagnostics -->
+  <div class="grid-two-col">
+    <!-- Sources Summary Card -->
+    <mat-card class="diag-card">
+      <div class="card-title-bar">
+        <mat-icon color="primary">hub</mat-icon>
+        <h3>Position Sources & Confidence Breakdown</h3>
+      </div>
+      <div class="sources-list">
+        <div class="source-row">
+          <div class="s-label">
+            <span class="s-name">Wi-Fi RSSI (Signal Strength)</span>
+            <span class="s-val">{{ rssiConfidence }}%</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="rssiConfidence" class="rssi-bar"></mat-progress-bar>
+        </div>
+
+        <div class="source-row">
+          <div class="s-label">
+            <span class="s-name">Wi-Fi RTT (Fine Timing Ranging)</span>
+            <span class="s-val">{{ rttConfidence }}%</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="rttConfidence" class="rtt-bar"></mat-progress-bar>
+        </div>
+
+        <div class="source-row">
+          <div class="s-label">
+            <span class="s-name">Phone Sensors (IMU / Step Dead Reckoning)</span>
+            <span class="s-val">{{ sensorConfidence }}%</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="sensorConfidence" class="sensor-bar"></mat-progress-bar>
+        </div>
+
+        <div class="source-row fusion-row">
+          <div class="s-label">
+            <span class="s-name font-bold">Multi-Sensor Position Fusion</span>
+            <span class="s-val font-bold text-primary">{{ confidencePercentage }}%</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="confidencePercentage" class="fusion-bar"></mat-progress-bar>
+        </div>
+      </div>
+
+      <div class="mini-metrics-row">
+        <div class="metric"><span class="m-val">{{ nearestAp }}</span><span class="m-lbl">Nearest AP</span></div>
+        <div class="metric"><span class="m-val">{{ rttDistance }} m</span><span class="m-lbl">RTT Distance</span></div>
+        <div class="metric"><span class="m-val">{{ compassHeading }}°</span><span class="m-lbl">Heading</span></div>
+        <div class="metric"><span class="m-val">Floor {{ currentFloor }}</span><span class="m-lbl">Level</span></div>
+      </div>
+    </mat-card>
+
+    <!-- Position Fusion Flowchart with Animated Packet Flow -->
+    <mat-card class="diag-card fusion-flow-card">
+      <div class="card-title-bar">
+        <mat-icon color="primary">schema</mat-icon>
+        <h3>Position Fusion Engine Topology</h3>
+        <span class="engine-badge font-mono">EKF FUSION MATRIX ACTIVE</span>
+      </div>
+      <div class="fusion-diagram dynamic-flow">
+        <div class="inputs-col">
+          <div class="input-node">
+            <mat-icon>wifi</mat-icon>
+            <div>
+              <span class="n-title">Wi-Fi RSSI</span>
+              <span class="n-sub">Log-distance model ({{ rssiConfidence }}%)</span>
+            </div>
+            <div class="packet-stream"><span class="packet p1"></span><span class="packet p2"></span></div>
+          </div>
+          <div class="input-node">
+            <mat-icon>radar</mat-icon>
+            <div>
+              <span class="n-title">Wi-Fi RTT</span>
+              <span class="n-sub">802.11mc FTM Ranging ({{ rttConfidence }}%)</span>
+            </div>
+            <div class="packet-stream"><span class="packet p1"></span><span class="packet p2"></span></div>
+          </div>
+          <div class="input-node">
+            <mat-icon>sensors</mat-icon>
+            <div>
+              <span class="n-title">Phone Sensors</span>
+              <span class="n-sub">IMU Dead Reckoning ({{ sensorConfidence }}%)</span>
+            </div>
+            <div class="packet-stream"><span class="packet p1"></span><span class="packet p2"></span></div>
+          </div>
+          <div class="input-node qr-node">
+            <mat-icon>qr_code_2</mat-icon>
+            <div>
+              <span class="n-title">QR Checkpoints</span>
+              <span class="n-sub">Zero-drift physical anchors (100%)</span>
+            </div>
+            <div class="packet-stream"><span class="packet p1"></span></div>
+          </div>
+        </div>
+
+        <div class="flow-arrow-animated">
+          <span class="stream-line"></span>
+        </div>
+
+        <div class="engine-box animated-engine">
+          <mat-icon class="pulse-icon">memory</mat-icon>
+          <h4>PositionFusionEngine</h4>
+          <span class="f-desc">Extended Kalman Filter (EKF) Matrix</span>
+          <div class="matrix-ticker font-mono">Q=[0.02, 0.02] • R=[0.15, 0.15]</div>
+        </div>
+
+        <div class="flow-arrow-animated">
+          <span class="stream-line"></span>
+        </div>
+
+        <div class="output-box">
+          <mat-icon color="primary">pin_drop</mat-icon>
+          <span class="o-title">Estimated Indoor Location</span>
+          <span class="o-sub font-mono">{{ localCoords }}</span>
+          <span class="o-conf">{{ confidencePercentage }}% Kalman Confidence</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Wi-Fi Signal Waveform & RTT 360 Radar Scope Display -->
+  <div class="grid-two-col">
+    <!-- Wi-Fi RSSI Signal & Oscilloscope Waveform -->
+    <mat-card class="diag-card">
+      <div class="card-title-bar">
+        <mat-icon color="primary">wifi</mat-icon>
+        <h3>Campus Access Points (Wi-Fi RSSI)</h3>
+        <button mat-button color="warn" (click)="toggleWifi()">
+          {{ wifiService.isWifiAvailable ? 'Simulate Wi-Fi Drop' : 'Restore Wi-Fi' }}
+        </button>
+      </div>
+
+      <div class="ap-table-wrap">
+        <div class="ap-item" *ngFor="let ap of rssiList">
+          <div class="ap-id-info">
+            <strong>{{ ap.apId }}</strong>
+            <span class="ap-name-sub">{{ ap.name }}</span>
+          </div>
+          <div class="signal-visual">
+            <div class="bars">
+              <span class="bar" [class.filled]="ap.signalBars >= 1"></span>
+              <span class="bar" [class.filled]="ap.signalBars >= 2"></span>
+              <span class="bar" [class.filled]="ap.signalBars >= 3"></span>
+              <span class="bar" [class.filled]="ap.signalBars >= 4"></span>
+              <span class="bar" [class.filled]="ap.signalBars >= 5"></span>
+            </div>
+            <span class="rssi-text">{{ ap.rssi }} dBm</span>
+          </div>
+          <span class="status-chip" [ngClass]="ap.status">{{ ap.status | uppercase }}</span>
+        </div>
+        <div *ngIf="rssiList.length === 0" class="empty-state">
+          ⚠ Wi-Fi signals unavailable. System operating in Sensor Dead Reckoning fallback mode.
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Wi-Fi RTT Fine Timing 360 Circular Radar Scope Display -->
+    <mat-card class="diag-card">
+      <div class="card-title-bar">
+        <mat-icon color="primary">radar</mat-icon>
+        <h3>Wi-Fi RTT 360° Revolving Radar Scope</h3>
+        <button mat-button color="accent" (click)="toggleRtt()">
+          {{ wifiService.isRttDegraded ? 'Restore High-Precision RTT' : 'Simulate RTT Noise' }}
+        </button>
+      </div>
+
+      <!-- Revolving Radar Scope PPI Display -->
+      <div class="radar-scope-container">
+        <div class="radar-scope">
+          <!-- Concentric Distance Range Rings -->
+          <div class="radar-ring ring-30m"><span class="ring-label">30m</span></div>
+          <div class="radar-ring ring-20m"><span class="ring-label">20m</span></div>
+          <div class="radar-ring ring-10m"><span class="ring-label">10m</span></div>
+          <div class="radar-ring ring-5m"><span class="ring-label">5m</span></div>
+
+          <!-- Crosshairs -->
+          <div class="radar-axis axis-vert"></div>
+          <div class="radar-axis axis-horiz"></div>
+
+          <!-- Cardinal Degrees -->
+          <span class="deg-lbl deg-0">000°</span>
+          <span class="deg-lbl deg-90">090°</span>
+          <span class="deg-lbl deg-180">180°</span>
+          <span class="deg-lbl deg-270">270°</span>
+
+          <!-- Revolving 360 Degree Sweep Beam -->
+          <div class="radar-sweep-beam"></div>
+
+          <!-- Center User Position Marker -->
+          <div class="radar-center-user" matTooltip="Your Estimated Planar Coordinates">
+            <div class="user-core"></div>
+            <div class="user-ping"></div>
+          </div>
+
+          <!-- Plotted Access Point Radar Blips -->
+          <div 
+            class="radar-ap-blip" 
+            *ngFor="let ap of radarAps"
+            [style.left.%]="ap.x" 
+            [style.top.%]="ap.y"
+            [matTooltip]="ap.name + ' (' + getApDistance(ap.id) + 'm, ' + ap.signal + ' dBm)'">
+            <div class="ap-dot"></div>
+            <div class="ap-ping"></div>
+            <span class="ap-code">{{ ap.id }} ({{ getApDistance(ap.id) }}m)</span>
+          </div>
+        </div>
+        
+        <div class="radar-hud-footer">
+          <span class="hud-status">● 802.11mc FTM RTT MULTILATERATION ACTIVE</span>
+          <span class="hud-accuracy">RTT ACCURACY: ±0.8m (ZERO GPS)</span>
+        </div>
+      </div>
+
+      <div class="trilateration-summary" *ngIf="trilateration">
+        <div class="tri-title">Trilateration Engine Output:</div>
+        <div class="tri-coords">
+          Estimated: X={{ trilateration.estimatedX }}m, Y={{ trilateration.estimatedY }}m | Floor {{ trilateration.estimatedFloor }}
+          <span class="conf-pill">{{ (trilateration.confidence * 100).toFixed(0) }}% RTT Match</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Section 7 & 30: Smartphone Sensors (IMU Suite) -->
+  <mat-card class="diag-card sensors-imu-card">
+    <div class="card-title-bar">
+      <mat-icon color="primary">explore</mat-icon>
+      <h3>Smartphone Sensor Suite (Accelerometer, Gyroscope, Magnetometer)</h3>
+    </div>
+
+    <div class="imu-grid">
+      <!-- Magnetometer Compass -->
+      <div class="imu-sub-block compass-block">
+        <h4>Magnetometer Orientation</h4>
+        <div class="compass-dial-wrap">
+          <div class="compass-dial" [style.transform]="'rotate(' + compassHeading + 'deg)'">
+            <div class="needle"></div>
+            <span class="mark n">N</span>
+            <span class="mark e">E</span>
+            <span class="mark s">S</span>
+            <span class="mark w">W</span>
+          </div>
+          <div class="heading-display">
+            <span class="deg">{{ compassHeading }}°</span>
+            <span class="dir-text">{{ sensorData?.magnetometer?.cardinalDirection || 'East (92°)' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Gyroscope Gimbal Display -->
+      <div class="imu-sub-block gimbal-block">
+        <h4>3D Inertial Gimbal</h4>
+        <div class="gimbal-viewport">
+          <div class="gimbal-stage" [style.transform]="'rotateY(' + compassHeading + 'deg) rotateX(' + (sensorData?.accelerometer?.isWalking ? 15 : 0) + 'deg)'">
+            <div class="gimbal-ring ring-yaw"><span class="axis-badge">YAW {{ compassHeading }}°</span></div>
+            <div class="gimbal-ring ring-pitch"><span class="axis-badge">PITCH 12°</span></div>
+            <div class="gimbal-ring ring-roll"><span class="axis-badge">ROLL -4°</span></div>
+            <div class="gimbal-core"></div>
+          </div>
+        </div>
+        <div class="imu-row mt-2">
+          <span>Angular Rate:</span>
+          <strong>{{ sensorData?.gyroscope?.angularRate || 0 }} °/s</strong>
+        </div>
+      </div>
+
+      <!-- Accelerometer -->
+      <div class="imu-sub-block">
+        <h4>Accelerometer (Movement)</h4>
+        <div class="imu-val-large">
+          {{ sensorData?.accelerometer?.acceleration || 1.1 }} <span class="unit">m/s²</span>
+        </div>
+        <div class="imu-row">
+          <span>Walking State:</span>
+          <strong class="text-primary">{{ sensorData?.accelerometer?.isWalking ? 'Active Walking' : 'Stationary' }}</strong>
+        </div>
+        <div class="imu-row">
+          <span>Estimated Steps:</span>
+          <strong>{{ stepCount }} steps</strong>
+        </div>
+        <div class="imu-row">
+          <span>Dead Reckoning Drift:</span>
+          <strong>&lt; 0.3m per minute</strong>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Section 40 & 41: Campus Simulation Controller & Demo Scenarios -->
+  <mat-card class="diag-card controller-card">
+    <div class="card-title-bar">
+      <mat-icon color="primary">sports_esports</mat-icon>
+      <h3>Campus Simulation Controller & Preconfigured Demo Scenarios</h3>
+    </div>
+
+    <!-- Scenarios Row -->
+    <div class="scenarios-grid">
+      <div 
+        class="scenario-box" 
+        *ngFor="let sc of scenarios" 
+        [class.active]="activeScenarioId === sc.id"
+        (click)="runScenario(sc.id)">
+        <div class="sc-header">
+          <mat-icon color="primary">{{ sc.icon }}</mat-icon>
+          <h4>{{ sc.title }}</h4>
+        </div>
+        <p class="sc-desc">{{ sc.description }}</p>
+        <button mat-stroked-button color="primary" class="sc-btn">{{ sc.actionText }}</button>
+      </div>
+    </div>
+
+    <!-- Interactive Manual Simulation Buttons (Section 40) -->
+    <div class="manual-controls-bar">
+      <span class="ctrl-lbl">Manual Simulation Controls:</span>
+      <div class="btn-group">
+        <button mat-raised-button (click)="moveForward()"><mat-icon>arrow_upward</mat-icon> Move Forward</button>
+        <button mat-raised-button (click)="turnLeft()"><mat-icon>rotate_left</mat-icon> Turn Left (-45°)</button>
+        <button mat-raised-button (click)="turnRight()"><mat-icon>rotate_right</mat-icon> Turn Right (+45°)</button>
+        <button mat-raised-button (click)="changeFloor(currentFloor === 2 ? 0 : 2)">
+          <mat-icon>elevator</mat-icon> Change Floor ({{ currentFloor === 2 ? 'GF' : 'Floor 2' }})
+        </button>
+        <button mat-raised-button color="accent" (click)="triggerQr()">
+          <mat-icon>qr_code_scanner</mat-icon> Trigger QR
+        </button>
+        <button mat-raised-button color="warn" (click)="triggerDeviation()">
+          <mat-icon>alt_route</mat-icon> Trigger Deviation
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>

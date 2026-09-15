@@ -1,0 +1,237 @@
+$primary: #1565C0;
+$secondary: #00897B;
+$bg-card: #FFFFFF;
+$text-primary: #1A1A2E;
+$text-secondary: #5F6368;
+$border: #E0E0E0;
+
+.demo-widget {
+  pointer-events: auto;
+  font-family: inherit;
+
+  .widget-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid $border;
+    border-radius: 24px;
+    padding: 8px 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #F8F9FA;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+      transform: translateY(-1px);
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #B0BEC5;
+
+      &.active {
+        background: #00E676;
+        box-shadow: 0 0 8px rgba(0, 230, 118, 0.8);
+        animation: pulse-dot 1.5s infinite;
+      }
+    }
+
+    .mini-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: $text-primary;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $text-secondary;
+    }
+  }
+
+  .widget-card {
+    background: #ffffff;
+    border: 1px solid $border;
+    border-radius: 16px;
+    padding: 16px;
+    width: 320px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+    animation: slide-up 0.25s ease;
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .title-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .pulse-icon {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          background: #E3F2FD;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $primary;
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+
+          &.running {
+            background: #E8F5E9;
+            color: #2E7D32;
+          }
+        }
+
+        h4 {
+          margin: 0;
+          font-size: 14px;
+          font-weight: 800;
+          color: $text-primary;
+        }
+
+        .sub-label {
+          font-size: 10px;
+          color: $text-secondary;
+        }
+      }
+
+      .header-actions {
+        mat-icon {
+          color: $text-secondary;
+        }
+      }
+    }
+
+    .route-summary {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #F5F7FA;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: $text-primary;
+      margin-bottom: 12px;
+
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        color: $text-secondary;
+      }
+    }
+
+    .live-step-box {
+      background: #F1F8E9;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+
+      .step-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        font-weight: 700;
+        color: #2E7D32;
+        margin-bottom: 4px;
+      }
+
+      mat-progress-bar {
+        height: 6px;
+        border-radius: 3px;
+        margin-bottom: 8px;
+      }
+
+      .step-instruction {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        color: #1B5E20;
+        line-height: 1.4;
+      }
+    }
+
+    .speed-selector {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+
+      .speed-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: $text-secondary;
+      }
+
+      .speed-buttons {
+        display: flex;
+        gap: 4px;
+
+        .speed-btn {
+          border: 1px solid $border;
+          background: #ffffff;
+          border-radius: 6px;
+          padding: 2px 8px;
+          font-size: 11px;
+          font-weight: 700;
+          color: $text-secondary;
+          cursor: pointer;
+
+          &.active {
+            background: $primary;
+            color: #ffffff;
+            border-color: $primary;
+          }
+        }
+      }
+    }
+
+    .control-actions {
+      display: flex;
+      gap: 8px;
+
+      .play-btn {
+        flex: 1;
+        height: 38px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
+
+        mat-icon {
+          margin-right: 4px;
+        }
+      }
+
+      button[mat-stroked-button] {
+        height: 38px;
+        border-radius: 8px;
+      }
+    }
+  }
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

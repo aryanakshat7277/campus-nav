@@ -1,0 +1,5 @@
+<mat-button-toggle-group [value]="currentFloor" (change)="onFloorChange($event.value)" vertical class="floor-group">
+  <mat-button-toggle *ngFor="let f of floors" [value]="f">
+    {{ f }}
+  </mat-button-toggle>
+</mat-button-toggle-group>

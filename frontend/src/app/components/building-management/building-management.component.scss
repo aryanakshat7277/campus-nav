@@ -1,0 +1,295 @@
+$primary: #1565C0;
+$secondary: #00897B;
+$bg-page: #F5F7FA;
+$text-primary: #1A1A2E;
+$text-secondary: #5F6368;
+$border: #E0E0E0;
+
+.mgmt-view {
+  min-height: 100%;
+  background-color: $bg-page;
+  padding: 24px 20px 48px;
+}
+
+.mgmt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .title-wrap {
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      color: $text-primary;
+    }
+    p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: $text-secondary;
+    }
+  }
+
+  .actions {
+    button {
+      border-radius: 8px;
+      font-weight: 600;
+      height: 40px;
+    }
+  }
+}
+
+.table-card {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid $border;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.stats-row {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ECEFF1;
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+
+    .v {
+      font-size: 18px;
+      font-weight: 800;
+      color: $primary;
+
+      &.success {
+        color: #2E7D32;
+      }
+    }
+
+    .l {
+      font-size: 11px;
+      color: $text-secondary;
+      font-weight: 600;
+    }
+  }
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.mgmt-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th.mat-mdc-header-cell {
+    background: #F8F9FA;
+    color: $text-secondary;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  tr.mat-mdc-row {
+    cursor: pointer;
+
+    &.selected {
+      background-color: #F0F7FF;
+    }
+  }
+
+  td.mat-mdc-cell {
+    padding: 12px 10px;
+    font-size: 13px;
+
+    .code-pill {
+      font-family: monospace;
+      font-weight: 700;
+      background: #ECEFF1;
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #37474F;
+    }
+
+    .b-name {
+      font-weight: 700;
+      color: $primary;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .desc-sub {
+      font-size: 11px;
+      color: $text-secondary;
+    }
+
+    .cat-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background: #F0F4F8;
+      color: #455A64;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .room-sub {
+      font-size: 11px;
+      color: $text-secondary;
+    }
+
+    .features-row {
+      display: flex;
+      gap: 6px;
+
+      .feature-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #ECEFF1;
+        color: #78909C;
+
+        mat-icon {
+          font-size: 13px;
+          width: 13px;
+          height: 13px;
+        }
+
+        &.yes {
+          background: #E8F5E9;
+          color: #2E7D32;
+        }
+      }
+    }
+
+    .status-chip {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
+      letter-spacing: 0.5px;
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+  }
+}
+
+// Floor & Rooms Detail
+.detail-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid $border;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+
+  .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ECEFF1;
+
+    .d-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+
+      p {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: $text-secondary;
+      }
+    }
+  }
+
+  .rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+
+    .room-card {
+      background: #F9FAFC;
+      border: 1px solid #ECEFF1;
+      border-radius: 10px;
+      padding: 14px;
+
+      .room-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+
+        .room-num {
+          font-family: monospace;
+          font-weight: 800;
+          font-size: 13px;
+          color: $primary;
+          background: #E3F2FD;
+          padding: 2px 6px;
+          border-radius: 4px;
+        }
+
+        .floor-badge {
+          font-size: 10px;
+          color: $text-secondary;
+          font-weight: 600;
+        }
+      }
+
+      h4 {
+        margin: 0 0 10px;
+        font-size: 13px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+
+      .room-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: $text-secondary;
+
+        span {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+
+          mat-icon {
+            font-size: 14px;
+            width: 14px;
+            height: 14px;
+          }
+        }
+
+        .acc-badge {
+          color: #2E7D32;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

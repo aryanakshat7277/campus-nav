@@ -1,0 +1,85 @@
+<div class="nearby-view">
+  <header class="nearby-header">
+    <button mat-icon-button routerLink="/" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-titles">
+      <h2>Nearby Campus Facilities</h2>
+      <p>Quick discovery of nearest amenities calculated from your live indoor position</p>
+    </div>
+  </header>
+
+  <div class="nearby-content">
+    <!-- Category Filter Chips -->
+    <div class="categories-bar">
+      <button 
+        *ngFor="let cat of categoryChips" 
+        class="cat-chip" 
+        [class.active]="selectedCategory === cat.id"
+        (click)="setCategory(cat.id)">
+        <mat-icon>{{ cat.icon }}</mat-icon>
+        <span>{{ cat.label }}</span>
+      </button>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-input-wrap">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        placeholder="Filter facilities by name, building, or amenity..." 
+        class="facility-search-input" />
+      <button *ngIf="searchQuery" mat-icon-button (click)="searchQuery = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Facilities Grid List -->
+    <div class="facilities-grid">
+      <mat-card *ngFor="let f of filteredFacilities" class="facility-card">
+        <div class="card-main">
+          <div class="facility-icon-wrap" [ngClass]="f.category">
+            <mat-icon>{{ f.icon }}</mat-icon>
+          </div>
+
+          <div class="facility-info">
+            <div class="title-row">
+              <h3>{{ f.name }}</h3>
+              <span class="status-pill" [class.open]="f.status === 'Open' || f.status === '24/7'">
+                {{ f.status }}
+              </span>
+            </div>
+
+            <div class="loc-meta">
+              <span class="loc-badge"><mat-icon>apartment</mat-icon> {{ f.building }}</span>
+              <span class="loc-badge"><mat-icon>layers</mat-icon> {{ f.floor }}</span>
+              <span class="access-badge" *ngIf="f.isAccessible" title="Step-free wheelchair access">
+                <mat-icon>accessible</mat-icon> Accessible
+              </span>
+            </div>
+
+            <p class="description">{{ f.description }}</p>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="distance-info">
+            <mat-icon color="primary">near_me</mat-icon>
+            <strong>{{ f.distanceMeters }} meters away</strong>
+            <span class="time-est">({{ f.timeEstimate }})</span>
+          </div>
+
+          <button mat-raised-button color="primary" class="nav-btn" (click)="navigateTo(f)">
+            <mat-icon>navigation</mat-icon> Navigate Here
+          </button>
+        </div>
+      </mat-card>
+
+      <div *ngIf="filteredFacilities.length === 0" class="no-results">
+        <mat-icon>search_off</mat-icon>
+        <p>No facilities match your search criteria. Try a different category or search term.</p>
+      </div>
+    </div>
+  </div>
+</div>

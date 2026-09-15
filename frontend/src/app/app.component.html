@@ -1,0 +1,14 @@
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #sidenav mode="over" [(opened)]="isSidebarOpen">
+    <app-sidebar (close)="sidenav.close()"></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-header (menuClick)="toggleSidebar()"></app-header>
+    <app-alert-banner></app-alert-banner>
+    
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

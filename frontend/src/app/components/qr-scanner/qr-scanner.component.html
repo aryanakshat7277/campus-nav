@@ -1,0 +1,148 @@
+<div class="qr-scanner-view">
+  <header class="scanner-header">
+    <button mat-icon-button (click)="close()" matTooltip="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="title-group">
+      <h2>Scan Location QR Checkpoint</h2>
+      <p>Align the campus wall QR inside the frame or trigger simulated detection</p>
+    </div>
+    <div class="header-action">
+      <span class="offline-badge"><mat-icon>cloud_off</mat-icon> 100% Offline Simulation</span>
+    </div>
+  </header>
+
+  <div class="scanner-body">
+    <!-- High-Precision Holographic Viewfinder Area -->
+    <div class="viewfinder-card" *ngIf="isScanning">
+      <div class="viewfinder-window" [class.scanning-active]="isDetectingAnimation">
+        <!-- Optical HUD Reticle Corners -->
+        <div class="corner top-left"></div>
+        <div class="corner top-right"></div>
+        <div class="corner bottom-left"></div>
+        <div class="corner bottom-right"></div>
+
+        <!-- Crosshair Reticle Center -->
+        <div class="reticle-cross cross-h"></div>
+        <div class="reticle-cross cross-v"></div>
+
+        <!-- Animated Laser Line with Glow Dust -->
+        <div class="scan-laser" [class.detecting]="isDetectingAnimation">
+          <div class="laser-beam"></div>
+          <div class="laser-dust"></div>
+        </div>
+
+        <!-- Center Target Graphic -->
+        <div class="center-target" [class.locked]="isDetectingAnimation && detectionProgress >= 75">
+          <mat-icon class="qr-placeholder-icon">qr_code_2</mat-icon>
+          <span class="scan-label" *ngIf="!isDetectingAnimation">Align Campus QR Within Target Reticle</span>
+          <span class="scan-label detecting" *ngIf="isDetectingAnimation">Acquiring Checkpoint Anchor...</span>
+        </div>
+
+        <!-- Live Holographic Token Decryption Ticker -->
+        <div class="hud-decrypt-ticker" *ngIf="isDetectingAnimation">
+          <div class="ticker-header">
+            <span class="blinking-dot">●</span>
+            <span class="ticker-label">OPTICAL TOKEN DECRYPTION STREAM</span>
+          </div>
+          <div class="ticker-token font-mono">{{ activeHexToken }}</div>
+          <div class="ticker-status font-mono">{{ decryptStreamText }}</div>
+        </div>
+
+        <!-- Scanning progress bar during detection -->
+        <div class="detection-progress-wrap" *ngIf="isDetectingAnimation">
+          <mat-progress-bar mode="determinate" [value]="detectionProgress"></mat-progress-bar>
+          <div class="progress-sub">
+            <span class="detect-pct">{{ detectionProgress }}% COMPLETE</span>
+            <span class="detect-lock">PARSING PHYSICAL ANCHOR</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="viewfinder-controls">
+        <button mat-raised-button color="primary" class="detect-btn" (click)="simulateDetection()" [disabled]="isDetectingAnimation">
+          <mat-icon>document_scanner</mat-icon>
+          <span>{{ isDetectingAnimation ? 'Optical Sensor Analyzing...' : 'Scan Checkpoint QR-004 (Floor 2 Corridor)' }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scanned Result Card (Section 11 & 34) -->
+    <mat-card class="result-card" *ngIf="!isScanning && scannedResult">
+      <div class="success-banner">
+        <div class="check-circle">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="check-text">
+          <h3>✓ Location Confirmed</h3>
+          <span class="accuracy-tag">Position Accuracy: 100% (Recalibrated)</span>
+        </div>
+      </div>
+
+      <div class="result-details">
+        <div class="detail-row">
+          <span class="label"><mat-icon>business</mat-icon> Building:</span>
+          <span class="val font-bold">{{ scannedResult.buildingName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><mat-icon>layers</mat-icon> Floor Level:</span>
+          <span class="val font-bold">Floor {{ scannedResult.floorNumber === 0 ? 'G (Ground)' : scannedResult.floorNumber }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><mat-icon>meeting_room</mat-icon> Confirmed Zone:</span>
+          <span class="val text-primary font-bold">{{ scannedResult.zoneName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><mat-icon>grid_view</mat-icon> Graph Anchor:</span>
+          <span class="val code">{{ scannedResult.nodeName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label"><mat-icon>straighten</mat-icon> Local Planar Grid:</span>
+          <span class="val code">{{ scannedResult.localCoords }}</span>
+        </div>
+      </div>
+
+      <div class="recalibration-alert">
+        <mat-icon>sync</mat-icon>
+        <span>Positioning drift eliminated. Fused Kalman filter state locked to verified physical anchor.</span>
+      </div>
+
+      <div class="result-actions">
+        <button mat-raised-button color="primary" class="action-btn" (click)="goToNavigation()">
+          <mat-icon>navigation</mat-icon> Continue Turn-by-Turn Navigation
+        </button>
+        <button mat-stroked-button class="action-btn" (click)="scanAnother()">
+          <mat-icon>qr_code_scanner</mat-icon> Test Another Checkpoint
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Checkpoint Simulation Library (Section 11) -->
+    <div class="presets-container">
+      <div class="presets-header">
+        <h4>Simulated Campus Wall QR Checkpoints</h4>
+        <span class="subtitle">Click any physical checkpoint to simulate immediate optical scan</span>
+      </div>
+
+      <div class="checkpoints-grid">
+        <div 
+          class="cp-card" 
+          *ngFor="let cp of checkpoints" 
+          (click)="selectCheckpoint(cp)">
+          <div class="cp-header">
+            <span class="token-pill">{{ cp.token }}</span>
+            <span class="floor-pill">Floor {{ cp.floor === 0 ? 'G' : cp.floor }}</span>
+          </div>
+          <h5>{{ cp.title }}</h5>
+          <p class="cp-desc">{{ cp.description }}</p>
+          <div class="cp-footer">
+            <span class="coords-sub">{{ cp.coords }}</span>
+            <button mat-button color="primary" class="simulate-btn">
+              <mat-icon>qr_code</mat-icon> Scan This
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

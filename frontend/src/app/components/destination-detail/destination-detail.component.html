@@ -1,0 +1,128 @@
+<div class="destination-detail-container" *ngIf="location">
+  <div class="top-nav-bar">
+    <button mat-icon-button routerLink="/" matTooltip="Back to Campus Map">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="nav-title">Destination Details</span>
+    <button mat-icon-button (click)="shareLocation()" [matTooltip]="copied ? 'Link Copied!' : 'Share Destination'">
+      <mat-icon [color]="copied ? 'accent' : ''">{{ copied ? 'check' : 'share' }}</mat-icon>
+    </button>
+  </div>
+
+  <mat-card class="destination-card">
+    <div class="hero-image-wrap">
+      <img [src]="location.imageUrl" [alt]="location.name" class="hero-img">
+      <div class="hero-overlay">
+        <span class="category-pill">
+          <mat-icon>{{ location.categoryIcon }}</mat-icon> {{ location.category }}
+        </span>
+        <span class="verified-pill">
+          <mat-icon>verified</mat-icon> CUTM Paralakhemundi
+        </span>
+      </div>
+    </div>
+
+    <div class="card-content-body">
+      <header class="dest-header">
+        <div class="dept-label">{{ location.department }}</div>
+        <h1>{{ location.name }}</h1>
+        <div class="location-crumb">
+          <mat-icon>business</mat-icon>
+          <span>{{ location.buildingName }}</span>
+          <span class="dot">•</span>
+          <span class="floor-tag">Floor {{ location.floorNumber }}</span>
+          <span class="dot" *ngIf="location.roomNumber">•</span>
+          <span class="room-tag" *ngIf="location.roomNumber">{{ location.roomNumber }}</span>
+          <span class="dot" *ngIf="location.wing">•</span>
+          <span class="wing-tag" *ngIf="location.wing">{{ location.wing }}</span>
+        </div>
+      </header>
+
+      <!-- Key Metrics Row -->
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <mat-icon class="icon blue">directions_walk</mat-icon>
+          <div class="metric-text">
+            <span class="val">{{ location.distance }}</span>
+            <span class="lbl">From Current Spot</span>
+          </div>
+        </div>
+        <div class="metric-box">
+          <mat-icon class="icon teal">timer</mat-icon>
+          <div class="metric-text">
+            <span class="val">{{ location.time }}</span>
+            <span class="lbl">Est. Walking Time</span>
+          </div>
+        </div>
+        <div class="metric-box" [class.accessible-box]="location.accessible">
+          <mat-icon class="icon" [ngClass]="location.accessible ? 'green' : 'amber'">
+            {{ location.accessible ? 'accessible' : 'not_accessible' }}
+          </mat-icon>
+          <div class="metric-text">
+            <span class="val">{{ location.accessible ? 'Accessible' : 'Stairs Only' }}</span>
+            <span class="lbl">{{ location.rampAvailable ? 'Ramp & Elevator' : 'Stairs En Route' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <section class="section-block">
+        <h3>Overview</h3>
+        <p class="description-text">{{ location.description }}</p>
+      </section>
+
+      <!-- Amenities Chips -->
+      <section class="section-block" *ngIf="location.amenities?.length">
+        <h3>Facilities & Amenities</h3>
+        <div class="amenities-chips">
+          <div class="amenity-chip" *ngFor="let a of location.amenities">
+            <mat-icon>done</mat-icon> {{ a }}
+          </div>
+        </div>
+      </section>
+
+      <!-- Details & Contact -->
+      <section class="section-block details-block">
+        <h3>Operational Details</h3>
+        <div class="meta-list">
+          <div class="meta-row">
+            <div class="label-wrap"><mat-icon>schedule</mat-icon> Opening Hours:</div>
+            <div class="val-wrap font-bold">{{ location.hours }}</div>
+          </div>
+          <div class="meta-row" *ngIf="location.capacity">
+            <div class="label-wrap"><mat-icon>groups</mat-icon> Seating Capacity:</div>
+            <div class="val-wrap">{{ location.capacity }} Persons</div>
+          </div>
+          <div class="meta-row" *ngIf="location.contactPerson">
+            <div class="label-wrap"><mat-icon>person</mat-icon> Contact Person:</div>
+            <div class="val-wrap">{{ location.contactPerson }}</div>
+          </div>
+          <div class="meta-row" *ngIf="location.phone">
+            <div class="label-wrap"><mat-icon>call</mat-icon> Telephone:</div>
+            <div class="val-wrap"><a [href]="'tel:' + location.phone">{{ location.phone }}</a></div>
+          </div>
+          <div class="meta-row" *ngIf="location.email">
+            <div class="label-wrap"><mat-icon>mail</mat-icon> Email:</div>
+            <div class="val-wrap"><a [href]="'mailto:' + location.email">{{ location.email }}</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Actions -->
+      <div class="action-footer">
+        <button mat-raised-button color="primary" class="primary-nav-btn" (click)="startNavigation()">
+          <mat-icon>navigation</mat-icon>
+          <span>Start Turn-by-Turn Navigation</span>
+        </button>
+        <div class="secondary-actions">
+          <button mat-stroked-button routerLink="/nearby">
+            <mat-icon>near_me</mat-icon> Find Nearby Facilities
+          </button>
+          <button mat-stroked-button routerLink="/qr-scanner">
+            <mat-icon>qr_code_scanner</mat-icon> Scan Wall QR Checkpoint
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

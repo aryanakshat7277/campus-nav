@@ -1,0 +1,126 @@
+<div class="visitor-view">
+  <!-- Hero Section -->
+  <header class="visitor-hero">
+    <div class="hero-content">
+      <span class="uni-badge">CENTURION UNIVERSITY OF TECHNOLOGY & MANAGEMENT</span>
+      <h1>Welcome to Paralakhemundi Campus</h1>
+      <p class="hero-desc">
+        Nestled on the foothills of the Eastern Ghats across 120 scenic acres. Discover world-class academic institutions, research centers, and serene campus facilities.
+      </p>
+      <div class="hero-stats">
+        <div class="stat"><span class="val">120+</span><span class="lbl">Acres</span></div>
+        <div class="stat"><span class="val">30+</span><span class="lbl">Buildings</span></div>
+        <div class="stat"><span class="val">100%</span><span class="lbl">Accessible</span></div>
+        <div class="stat"><span class="val">Free</span><span class="lbl">Campus WiFi</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="visitor-body">
+    <mat-tab-group animationDuration="200ms" class="visitor-tabs">
+      <!-- Tab 1: Key Destinations -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">place</mat-icon>
+          <span>Key Destinations</span>
+        </ng-template>
+
+        <div class="tab-content">
+          <div class="spots-grid">
+            <mat-card *ngFor="let d of destinations" class="spot-card">
+              <div class="spot-card-top">
+                <div class="icon-avatar">
+                  <mat-icon color="primary">{{ d.icon }}</mat-icon>
+                </div>
+                <div class="spot-title-area">
+                  <h3>{{ d.name }}</h3>
+                  <span class="building-name">{{ d.building }} • {{ d.floor }}</span>
+                </div>
+              </div>
+
+              <p class="spot-description">{{ d.description }}</p>
+
+              <div class="spot-tags">
+                <span *ngFor="let tag of d.tags" class="chip">{{ tag }}</span>
+              </div>
+
+              <div class="spot-footer">
+                <div class="distance-badge">
+                  <mat-icon>directions_walk</mat-icon>
+                  <span>{{ d.distance }}m ({{ d.timeEstimate }})</span>
+                </div>
+                <button mat-flat-button color="primary" (click)="navigateToSpot(d)">
+                  <mat-icon>navigation</mat-icon> Navigate
+                </button>
+              </div>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Tab 2: 30-Minute Walking Tour -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">explore</mat-icon>
+          <span>Self-Guided Walking Tour (35 min)</span>
+        </ng-template>
+
+        <div class="tab-content">
+          <div class="tour-timeline">
+            <div *ngFor="let stop of walkingTour" class="tour-stop-card">
+              <div class="stop-number">{{ stop.stopNumber }}</div>
+              <div class="stop-details">
+                <div class="stop-header">
+                  <h4>{{ stop.name }}</h4>
+                  <span class="duration">{{ stop.duration }}</span>
+                </div>
+                <span class="stop-building"><mat-icon>apartment</mat-icon> {{ stop.building }}</span>
+                <p class="stop-desc">{{ stop.description }}</p>
+                <div class="highlight-badge">
+                  <mat-icon>star</mat-icon>
+                  <span>Highlight: {{ stop.highlight }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Tab 3: Visitor Information & Guidelines -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">info</mat-icon>
+          <span>Visitor Guidelines & Amenities</span>
+        </ng-template>
+
+        <div class="tab-content">
+          <div class="info-cards-grid">
+            <mat-card class="info-card">
+              <mat-icon color="primary">local_parking</mat-icon>
+              <h4>Visitor Parking</h4>
+              <p>Designated visitor parking is located adjacent to the Main Entrance Gate. 2-wheeler and 4-wheeler bays available.</p>
+            </mat-card>
+
+            <mat-card class="info-card">
+              <mat-icon color="primary">wifi</mat-icon>
+              <h4>Guest Wi-Fi</h4>
+              <p>Connect to <strong>CUTM-GUEST</strong>. Register with your mobile number to receive instant OTP verification.</p>
+            </mat-card>
+
+            <mat-card class="info-card">
+              <mat-icon color="primary">accessible</mat-icon>
+              <h4>Accessibility Support</h4>
+              <p>All academic buildings have ramp entrances and elevators. Wheelchairs are available at the Main Gate security post.</p>
+            </mat-card>
+
+            <mat-card class="info-card">
+              <mat-icon color="primary">restaurant</mat-icon>
+              <h4>Dining for Visitors</h4>
+              <p>Central Food Court and Cafeteria are open to visitors from 8:00 AM to 9:30 PM with cashless payment options.</p>
+            </mat-card>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,1055 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAIN_GATE",
+        "name": "Main Gate",
+        "type": "entrance"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09285,
+              18.77685
+            ],
+            [
+              84.09315000000001,
+              18.77685
+            ],
+            [
+              84.09315000000001,
+              18.777150000000002
+            ],
+            [
+              84.09285,
+              18.777150000000002
+            ],
+            [
+              84.09285,
+              18.77685
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ADMIN_BLOCK",
+        "name": "Admin Block",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09335,
+              18.777649999999998
+            ],
+            [
+              84.09365000000001,
+              18.777649999999998
+            ],
+            [
+              84.09365000000001,
+              18.77795
+            ],
+            [
+              84.09335,
+              18.77795
+            ],
+            [
+              84.09335,
+              18.777649999999998
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ARYABHATTA_GF",
+        "name": "Aryabhatta Block",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09384999999999,
+              18.77835
+            ],
+            [
+              84.09415,
+              18.77835
+            ],
+            [
+              84.09415,
+              18.778650000000003
+            ],
+            [
+              84.09384999999999,
+              18.778650000000003
+            ],
+            [
+              84.09384999999999,
+              18.77835
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AGRI_GF",
+        "name": "School of Agriculture",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09485,
+              18.779349999999997
+            ],
+            [
+              84.09515,
+              18.779349999999997
+            ],
+            [
+              84.09515,
+              18.77965
+            ],
+            [
+              84.09485,
+              18.77965
+            ],
+            [
+              84.09485,
+              18.779349999999997
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FISHERIES",
+        "name": "School of Fisheries",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09434999999999,
+              18.77985
+            ],
+            [
+              84.09465,
+              18.77985
+            ],
+            [
+              84.09465,
+              18.780150000000003
+            ],
+            [
+              84.09434999999999,
+              18.780150000000003
+            ],
+            [
+              84.09434999999999,
+              18.77985
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PHARMACY",
+        "name": "School of Pharmacy",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09535,
+              18.77885
+            ],
+            [
+              84.09565,
+              18.77885
+            ],
+            [
+              84.09565,
+              18.77915
+            ],
+            [
+              84.09535,
+              18.77915
+            ],
+            [
+              84.09535,
+              18.77885
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MANAGEMENT",
+        "name": "School of Management",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09434999999999,
+              18.778049999999997
+            ],
+            [
+              84.09465,
+              18.778049999999997
+            ],
+            [
+              84.09465,
+              18.77835
+            ],
+            [
+              84.09434999999999,
+              18.77835
+            ],
+            [
+              84.09434999999999,
+              18.778049999999997
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NURSING",
+        "name": "School of Nursing",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09585,
+              18.77865
+            ],
+            [
+              84.09615000000001,
+              18.77865
+            ],
+            [
+              84.09615000000001,
+              18.778950000000002
+            ],
+            [
+              84.09585,
+              18.778950000000002
+            ],
+            [
+              84.09585,
+              18.77865
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CS_LAB",
+        "name": "Computer Science Lab",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09405,
+              18.77845
+            ],
+            [
+              84.09435,
+              18.77845
+            ],
+            [
+              84.09435,
+              18.778750000000002
+            ],
+            [
+              84.09405,
+              18.778750000000002
+            ],
+            [
+              84.09405,
+              18.77845
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "LIBRARY_GF",
+        "name": "Central Library",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09384999999999,
+              18.777849999999997
+            ],
+            [
+              84.09415,
+              18.777849999999997
+            ],
+            [
+              84.09415,
+              18.77815
+            ],
+            [
+              84.09384999999999,
+              18.77815
+            ],
+            [
+              84.09384999999999,
+              18.777849999999997
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAHANADI_HOSTEL",
+        "name": "Mahanadi Boys Hostel",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09185,
+              18.77735
+            ],
+            [
+              84.09215,
+              18.77735
+            ],
+            [
+              84.09215,
+              18.77765
+            ],
+            [
+              84.09185,
+              18.77765
+            ],
+            [
+              84.09185,
+              18.77735
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "NAGAVALI_HOSTEL",
+        "name": "Nagavali Girls Hostel",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09185,
+              18.77885
+            ],
+            [
+              84.09215,
+              18.77885
+            ],
+            [
+              84.09215,
+              18.77915
+            ],
+            [
+              84.09185,
+              18.77915
+            ],
+            [
+              84.09185,
+              18.77885
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MAHENDRA_HOSTEL",
+        "name": "Mahendra Tanaya Hostel",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09134999999999,
+              18.77705
+            ],
+            [
+              84.09165,
+              18.77705
+            ],
+            [
+              84.09165,
+              18.777350000000002
+            ],
+            [
+              84.09134999999999,
+              18.777350000000002
+            ],
+            [
+              84.09134999999999,
+              18.77705
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INDRAVATI_HOSTEL",
+        "name": "Indravati Hostel",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09134999999999,
+              18.779049999999998
+            ],
+            [
+              84.09165,
+              18.779049999999998
+            ],
+            [
+              84.09165,
+              18.77935
+            ],
+            [
+              84.09134999999999,
+              18.77935
+            ],
+            [
+              84.09134999999999,
+              18.779049999999998
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CENTRAL_MESS",
+        "name": "Central Mess",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09235,
+              18.777549999999998
+            ],
+            [
+              84.09265,
+              18.777549999999998
+            ],
+            [
+              84.09265,
+              18.77785
+            ],
+            [
+              84.09235,
+              18.77785
+            ],
+            [
+              84.09235,
+              18.777549999999998
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "FOOD_COURT",
+        "name": "Food Court",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09264999999999,
+              18.77735
+            ],
+            [
+              84.09295,
+              18.77735
+            ],
+            [
+              84.09295,
+              18.77765
+            ],
+            [
+              84.09264999999999,
+              18.77765
+            ],
+            [
+              84.09264999999999,
+              18.77735
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "AUDITORIUM",
+        "name": "Auditorium",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09465,
+              18.77815
+            ],
+            [
+              84.09495000000001,
+              18.77815
+            ],
+            [
+              84.09495000000001,
+              18.778450000000003
+            ],
+            [
+              84.09465,
+              18.778450000000003
+            ],
+            [
+              84.09465,
+              18.77815
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "TEMPLE",
+        "name": "Campus Temple",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09304999999999,
+              18.777849999999997
+            ],
+            [
+              84.09335,
+              18.777849999999997
+            ],
+            [
+              84.09335,
+              18.77815
+            ],
+            [
+              84.09304999999999,
+              18.77815
+            ],
+            [
+              84.09304999999999,
+              18.777849999999997
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "SPORTS_COMPLEX",
+        "name": "Sports Complex",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09235,
+              18.77965
+            ],
+            [
+              84.09265,
+              18.77965
+            ],
+            [
+              84.09265,
+              18.779950000000003
+            ],
+            [
+              84.09235,
+              18.779950000000003
+            ],
+            [
+              84.09235,
+              18.77965
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MEDICAL",
+        "name": "Diagnostics Center",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09405,
+              18.777449999999998
+            ],
+            [
+              84.09435,
+              18.777449999999998
+            ],
+            [
+              84.09435,
+              18.77775
+            ],
+            [
+              84.09405,
+              18.77775
+            ],
+            [
+              84.09405,
+              18.777449999999998
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "WELLNESS",
+        "name": "Ayurveda Wellness Centre",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09424999999999,
+              18.77725
+            ],
+            [
+              84.09455,
+              18.77725
+            ],
+            [
+              84.09455,
+              18.77755
+            ],
+            [
+              84.09424999999999,
+              18.77755
+            ],
+            [
+              84.09424999999999,
+              18.77725
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "GUEST_HOUSE",
+        "name": "Guest House",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09365,
+              18.77685
+            ],
+            [
+              84.09395,
+              18.77685
+            ],
+            [
+              84.09395,
+              18.777150000000002
+            ],
+            [
+              84.09365,
+              18.777150000000002
+            ],
+            [
+              84.09365,
+              18.77685
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ATM",
+        "name": "ATM / Bank",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09315,
+              18.77715
+            ],
+            [
+              84.09345,
+              18.77715
+            ],
+            [
+              84.09345,
+              18.77745
+            ],
+            [
+              84.09315,
+              18.77745
+            ],
+            [
+              84.09315,
+              18.77715
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PARKING_AREA",
+        "name": "Parking Area",
+        "type": "parking"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09304999999999,
+              18.77705
+            ],
+            [
+              84.09335,
+              18.77705
+            ],
+            [
+              84.09335,
+              18.777350000000002
+            ],
+            [
+              84.09304999999999,
+              18.777350000000002
+            ],
+            [
+              84.09304999999999,
+              18.77705
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "MARKET",
+        "name": "Market Complex",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09264999999999,
+              18.77695
+            ],
+            [
+              84.09295,
+              18.77695
+            ],
+            [
+              84.09295,
+              18.777250000000002
+            ],
+            [
+              84.09264999999999,
+              18.777250000000002
+            ],
+            [
+              84.09264999999999,
+              18.77695
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "STAFF_QUARTERS",
+        "name": "Staff Quarters",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09185,
+              18.77665
+            ],
+            [
+              84.09215,
+              18.77665
+            ],
+            [
+              84.09215,
+              18.776950000000003
+            ],
+            [
+              84.09185,
+              18.776950000000003
+            ],
+            [
+              84.09185,
+              18.77665
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "PRODUCTION_LAB",
+        "name": "Production Labs",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09465,
+              18.779149999999998
+            ],
+            [
+              84.09495000000001,
+              18.779149999999998
+            ],
+            [
+              84.09495000000001,
+              18.77945
+            ],
+            [
+              84.09465,
+              18.77945
+            ],
+            [
+              84.09465,
+              18.779149999999998
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "APPLIED_SCIENCES",
+        "name": "School of Applied Sciences",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09485,
+              18.77855
+            ],
+            [
+              84.09515,
+              18.77855
+            ],
+            [
+              84.09515,
+              18.778850000000002
+            ],
+            [
+              84.09485,
+              18.778850000000002
+            ],
+            [
+              84.09485,
+              18.77855
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "VOCATIONAL_ED",
+        "name": "School of Vocational Education",
+        "type": "building"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09535,
+              18.779349999999997
+            ],
+            [
+              84.09565,
+              18.779349999999997
+            ],
+            [
+              84.09565,
+              18.77965
+            ],
+            [
+              84.09535,
+              18.77965
+            ],
+            [
+              84.09535,
+              18.779349999999997
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "CENTRAL_GARDEN",
+        "name": "Central Garden",
+        "type": "garden"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              84.09335,
+              18.77835
+            ],
+            [
+              84.09365000000001,
+              18.77835
+            ],
+            [
+              84.09365000000001,
+              18.778650000000003
+            ],
+            [
+              84.09335,
+              18.778650000000003
+            ],
+            [
+              84.09335,
+              18.77835
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

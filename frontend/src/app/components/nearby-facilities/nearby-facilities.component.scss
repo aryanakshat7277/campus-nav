@@ -1,0 +1,304 @@
+$primary: #1565C0;
+$secondary: #00897B;
+$bg-page: #F5F7FA;
+$text-primary: #1A1A2E;
+$text-secondary: #5F6368;
+$border: #E0E0E0;
+
+.nearby-view {
+  min-height: 100%;
+  background-color: $bg-page;
+  padding: 24px 16px 40px;
+}
+
+.nearby-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 900px;
+  margin: 0 auto 20px;
+
+  .header-titles {
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: $text-primary;
+    }
+    p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: $text-secondary;
+    }
+  }
+}
+
+.nearby-content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+// Categories horizontal scroll
+.categories-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .cat-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid $border;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #455A64;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $primary;
+    }
+
+    &:hover {
+      background: #F0F4F8;
+    }
+
+    &.active {
+      background: #E3F2FD;
+      color: $primary;
+      border-color: $primary;
+    }
+  }
+}
+
+// Search
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 4px 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+
+  .search-icon {
+    color: #78909C;
+    margin-right: 8px;
+  }
+
+  .facility-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 10px 0;
+    color: $text-primary;
+
+    &::placeholder {
+      color: #9E9E9E;
+    }
+  }
+}
+
+// Facilities Grid
+.facilities-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.facility-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #ECEFF1;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $primary;
+    box-shadow: 0 6px 18px rgba(21, 101, 192, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .card-main {
+    display: flex;
+    gap: 16px;
+
+    .facility-icon-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+
+      &.washroom { background: #E0F2F1; color: #00796B; }
+      &.water { background: #E1F5FE; color: #0288D1; }
+      &.food { background: #FFF3E0; color: #E65100; }
+      &.atm { background: #EDE7F6; color: #512DA8; }
+      &.medical { background: #FFEBEE; color: #C62828; }
+      &.elevator { background: #F3E5F5; color: #7B1FA2; }
+      &.library { background: #E8F5E9; color: #2E7D32; }
+      &.parking { background: #ECEFF1; color: #455A64; }
+    }
+
+    .facility-info {
+      flex: 1;
+
+      .title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 700;
+          color: $text-primary;
+        }
+
+        .status-pill {
+          font-size: 10px;
+          font-weight: 700;
+          padding: 2px 8px;
+          border-radius: 8px;
+          background: #ECEFF1;
+          color: #546E7A;
+
+          &.open {
+            background: #E8F5E9;
+            color: #2E7D32;
+          }
+        }
+      }
+
+      .loc-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0 8px;
+        flex-wrap: wrap;
+
+        .loc-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 11px;
+          color: $text-secondary;
+          font-weight: 500;
+
+          mat-icon {
+            font-size: 14px;
+            width: 14px;
+            height: 14px;
+            color: $primary;
+          }
+        }
+
+        .access-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 10px;
+          font-weight: 700;
+          color: #2E7D32;
+          background: #E8F5E9;
+          padding: 2px 6px;
+          border-radius: 6px;
+
+          mat-icon {
+            font-size: 13px;
+            width: 13px;
+            height: 13px;
+          }
+        }
+      }
+
+      .description {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #546E7A;
+      }
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #F0F0F0;
+
+    .distance-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: $text-primary;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .time-est {
+        color: $text-secondary;
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+
+    .nav-btn {
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+  }
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid $border;
+  color: $text-secondary;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #B0BEC5;
+  }
+
+  p {
+    margin: 8px 0 0;
+    font-size: 14px;
+  }
+}

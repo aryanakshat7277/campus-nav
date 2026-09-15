@@ -1,0 +1,65 @@
+<div class="demo-widget" [class.expanded]="isExpanded">
+  <!-- Collapsed state trigger -->
+  <div class="widget-mini" *ngIf="!isExpanded" (click)="toggleExpand()">
+    <div class="status-dot" [class.active]="demoService.isSimulating | async"></div>
+    <span class="mini-label">
+      {{ (demoService.isSimulating | async) ? 'Simulation Active' : 'Walk Simulation' }}
+    </span>
+    <mat-icon>tune</mat-icon>
+  </div>
+
+  <!-- Expanded Card -->
+  <div class="widget-card" *ngIf="isExpanded">
+    <div class="card-header">
+      <div class="title-group">
+        <div class="pulse-icon" [class.running]="demoService.isSimulating | async">
+          <mat-icon>directions_walk</mat-icon>
+        </div>
+        <div>
+          <h4>Indoor Walk Simulator</h4>
+          <span class="sub-label">BLE & IMU Positioning Demo</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button mat-icon-button (click)="toggleExpand()" matTooltip="Collapse">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="route-summary">
+      <span class="from">Main Gate</span>
+      <mat-icon>arrow_forward</mat-icon>
+      <span class="to">Aryabhatta Block (Room C-204)</span>
+    </div>
+
+    <!-- Live instruction if running -->
+    <div class="live-step-box" *ngIf="demoService.isSimulating | async">
+      <div class="step-meta">
+        <span>Step {{ (demoService.currentStep | async)! + 1 }} of {{ demoService.totalSteps | async }}</span>
+        <span class="progress-val">{{ getProgressPercentage((demoService.currentStep | async)!, (demoService.totalSteps | async)!) }}%</span>
+      </div>
+      <mat-progress-bar mode="determinate" [value]="getProgressPercentage((demoService.currentStep | async)!, (demoService.totalSteps | async)!)"></mat-progress-bar>
+      <p class="step-instruction">{{ demoService.currentInstruction | async }}</p>
+    </div>
+
+    <div class="speed-selector">
+      <span class="speed-label">Speed:</span>
+      <div class="speed-buttons">
+        <button type="button" class="speed-btn" [class.active]="currentSpeed === 0.5" (click)="setSpeed(0.5)">0.5x</button>
+        <button type="button" class="speed-btn" [class.active]="currentSpeed === 1" (click)="setSpeed(1)">1x</button>
+        <button type="button" class="speed-btn" [class.active]="currentSpeed === 2" (click)="setSpeed(2)">2x</button>
+      </div>
+    </div>
+
+    <div class="control-actions">
+      <button mat-raised-button color="primary" class="play-btn" (click)="toggleSimulation()">
+        <mat-icon>{{ (demoService.isSimulating | async) ? 'pause' : 'play_arrow' }}</mat-icon>
+        <span>{{ (demoService.isSimulating | async) ? 'Pause Walking' : 'Start Simulation' }}</span>
+      </button>
+      <button mat-stroked-button *ngIf="demoService.isSimulating | async" (click)="demoService.stopSimulation()" matTooltip="Reset">
+        <mat-icon>stop</mat-icon> Reset
+      </button>
+    </div>
+  </div>
+</div>

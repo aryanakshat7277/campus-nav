@@ -1,0 +1,13 @@
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  h3 { margin: 0; }
+}
+mat-list-item {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.dark-theme mat-list-item {
+  border-bottom-color: rgba(255,255,255,0.05);
+}

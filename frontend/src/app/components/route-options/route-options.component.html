@@ -1,0 +1,81 @@
+<div class="route-options-view">
+  <header class="options-header">
+    <button mat-icon-button routerLink="/navigate" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-titles">
+      <h2>Route & Accessibility Preferences</h2>
+      <p>Configure navigation optimization, step-free access, and walking profile</p>
+    </div>
+  </header>
+
+  <div class="options-content">
+    <!-- Routing Mode Radio Options -->
+    <div class="profiles-card">
+      <mat-radio-group [(ngModel)]="selectedPreference" class="radio-list">
+        <div 
+          *ngFor="let opt of options" 
+          class="option-row" 
+          [class.active]="selectedPreference === opt.value"
+          (click)="selectedPreference = opt.value">
+          <mat-radio-button [value]="opt.value" color="primary"></mat-radio-button>
+          
+          <div class="opt-body">
+            <div class="opt-title-line">
+              <span class="opt-label">{{ opt.label }}</span>
+            </div>
+            <p class="opt-desc">{{ opt.desc }}</p>
+
+            <!-- Route Stats Badges -->
+            <div class="opt-stats">
+              <span class="stat-badge"><mat-icon>straighten</mat-icon> {{ opt.distance }}</span>
+              <span class="stat-badge"><mat-icon>schedule</mat-icon> {{ opt.time }}</span>
+              <span class="stat-badge" [class.danger]="opt.stairs > 0">
+                <mat-icon>stairs</mat-icon> {{ opt.stairs }} Stairs
+              </span>
+              <span class="stat-badge" [class.success]="opt.elevators > 0">
+                <mat-icon>elevator</mat-icon> {{ opt.elevators }} Elevator
+              </span>
+            </div>
+          </div>
+        </div>
+      </mat-radio-group>
+    </div>
+
+    <!-- Fine-Grained Accessibility Preferences -->
+    <div class="advanced-toggles-card">
+      <h3>Additional Mobility Settings</h3>
+
+      <div class="toggle-row">
+        <div>
+          <h4>Voice Turn-by-Turn Announcements</h4>
+          <p>Read out directional changes, distance countdowns, and landmark cues automatically.</p>
+        </div>
+        <mat-slide-toggle [(ngModel)]="highContrastAudio" color="primary"></mat-slide-toggle>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <h4>Prefer Indoor Weather-Protected Corridors</h4>
+          <p>Route through covered hallways whenever available during rain or high heat.</p>
+        </div>
+        <mat-slide-toggle [(ngModel)]="preferIndoorCorridors" color="primary"></mat-slide-toggle>
+      </div>
+
+      <div class="toggle-row">
+        <div>
+          <h4>Bypass Steep Incline Walkways</h4>
+          <p>Limit ramp gradient to a maximum of 1:12 slope for manual wheelchairs.</p>
+        </div>
+        <mat-slide-toggle [(ngModel)]="avoidRamps" color="primary"></mat-slide-toggle>
+      </div>
+    </div>
+
+    <!-- Apply Button -->
+    <div class="action-footer">
+      <button mat-raised-button color="primary" class="apply-btn" (click)="applyPreferences()">
+        <mat-icon>check</mat-icon> Apply Preferences & Update Route
+      </button>
+    </div>
+  </div>
+</div>

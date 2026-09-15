@@ -1,0 +1,14 @@
+<div class="alert-container" *ngIf="alerts.length > 0">
+  <mat-card *ngFor="let alert of alerts" [ngClass]="'alert-' + alert.type" class="alert-card">
+    <div class="alert-content">
+      <mat-icon>{{ getIcon(alert.type) }}</mat-icon>
+      <div class="alert-text">
+        <strong>{{ alert.title }}</strong>
+        <span>{{ alert.message }}</span>
+      </div>
+      <button mat-icon-button (click)="dismiss(alert)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-card>
+</div>

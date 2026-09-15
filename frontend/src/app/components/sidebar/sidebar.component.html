@@ -1,0 +1,132 @@
+<div class="sidebar-header">
+  <div class="brand">
+    <span class="icon">🧭</span>
+    <div>
+      <h2>CampusNav</h2>
+      <span class="subtitle">CUTM Paralakhemundi</span>
+    </div>
+  </div>
+</div>
+<mat-divider></mat-divider>
+
+<div class="sidebar-scrollable">
+  <h3 matSubheader>Navigation</h3>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/dashboard" (click)="close.emit()" class="dashboard-sidebar-item">
+      <mat-icon matListItemIcon color="primary">grid_view</mat-icon>
+      <div matListItemTitle>Campus Dashboard</div>
+      <div matListItemLine>Feature Launchpad & Ops Portal</div>
+    </a>
+    <a mat-list-item routerLink="/" (click)="close.emit()">
+      <mat-icon matListItemIcon color="primary">map</mat-icon>
+      <div matListItemTitle>Campus 2D Map</div>
+      <div matListItemLine>Interactive Leaflet View</div>
+    </a>
+    <a mat-list-item routerLink="/navigate" (click)="close.emit()">
+      <mat-icon matListItemIcon color="primary">navigation</mat-icon>
+      <div matListItemTitle>Live Indoor Navigation</div>
+      <div matListItemLine>BLE & Sensor Turn-by-Turn</div>
+    </a>
+    <a mat-list-item routerLink="/qr-scanner" (click)="close.emit()">
+      <mat-icon matListItemIcon color="accent">qr_code_scanner</mat-icon>
+      <div matListItemTitle>QR Checkpoint Scanner</div>
+      <div matListItemLine>100% Position Correction</div>
+    </a>
+    <a mat-list-item routerLink="/route-options" (click)="close.emit()">
+      <mat-icon matListItemIcon>tune</mat-icon>
+      <div matListItemTitle>Route Preferences</div>
+      <div matListItemLine>Fastest / Accessible / Stairs</div>
+    </a>
+  </mat-nav-list>
+
+  <mat-divider></mat-divider>
+
+  <h3 matSubheader>Campus Services</h3>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/nearby" (click)="close.emit()">
+      <mat-icon matListItemIcon color="primary">place</mat-icon>
+      <div matListItemTitle>Nearby Facilities</div>
+      <div matListItemLine>Washrooms, ATMs, Food, Medical</div>
+    </a>
+    <a mat-list-item routerLink="/emergency" (click)="close.emit()" class="emergency-item">
+      <mat-icon matListItemIcon color="warn">warning</mat-icon>
+      <div matListItemTitle>🚨 Emergency Mode</div>
+      <div matListItemLine>Nearest Exit & Medical</div>
+    </a>
+    <a mat-list-item routerLink="/visitor" (click)="close.emit()">
+      <mat-icon matListItemIcon>tour</mat-icon>
+      <div matListItemTitle>Visitor Campus Guide</div>
+      <div matListItemLine>Admin, Library, Temple, Auditoriums</div>
+    </a>
+  </mat-nav-list>
+
+  <mat-divider></mat-divider>
+
+  <h3 matSubheader>Infrastructure & Admin</h3>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/admin/diagnostics" (click)="close.emit()">
+      <mat-icon matListItemIcon color="primary">sensors</mat-icon>
+      <div matListItemTitle>Position Diagnostics</div>
+      <div matListItemLine>Live BLE, Wi-Fi & Sensor Telemetry</div>
+    </a>
+    <a mat-list-item routerLink="/admin" (click)="close.emit()">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <div matListItemTitle>Admin Dashboard</div>
+      <div matListItemLine>Locations & Alerts Management</div>
+    </a>
+    <a mat-list-item routerLink="/admin/beacons" (click)="close.emit()">
+      <mat-icon matListItemIcon>bluetooth</mat-icon>
+      <div matListItemTitle>BLE Beacons</div>
+      <div matListItemLine>6 Hardware Transmitters</div>
+    </a>
+    <a mat-list-item routerLink="/admin/qr" (click)="close.emit()">
+      <mat-icon matListItemIcon>qr_code</mat-icon>
+      <div matListItemTitle>QR Checkpoints</div>
+      <div matListItemLine>Wall Tokens & Checkpoints</div>
+    </a>
+    <a mat-list-item routerLink="/admin/buildings" (click)="close.emit()">
+      <mat-icon matListItemIcon>apartment</mat-icon>
+      <div matListItemTitle>Buildings & Floors</div>
+      <div matListItemLine>Multi-Floor Hierarchy</div>
+    </a>
+    <a mat-list-item routerLink="/admin/landmarks" (click)="close.emit()">
+      <mat-icon matListItemIcon>storefront</mat-icon>
+      <div matListItemTitle>Landmarks Directory</div>
+      <div matListItemLine>Wayfinding Reference Points</div>
+    </a>
+    <a mat-list-item routerLink="/admin/closures" (click)="close.emit()">
+      <mat-icon matListItemIcon>block</mat-icon>
+      <div matListItemTitle>Route Closures</div>
+      <div matListItemLine>Maintenance & Temporary Obstacles</div>
+    </a>
+  </mat-nav-list>
+
+  <mat-divider></mat-divider>
+
+  <div class="sidebar-section">
+    <button mat-stroked-button color="primary" class="fullscreen-sidebar-btn" (click)="toggleFullscreen()" style="width: 100%; margin-bottom: 12px; font-weight: 600;">
+      <mat-icon>fullscreen</mat-icon>
+      <span>Toggle Full Screen</span>
+    </button>
+    <mat-slide-toggle [(ngModel)]="isAccessible" (change)="toggleAccessible()" color="primary">
+      <span class="toggle-label">♿ Wheelchair Accessible</span>
+    </mat-slide-toggle>
+    <p class="toggle-hint">Excludes stairs, prioritizes elevators & ramps.</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <h3 matSubheader>Quick Category Filter</h3>
+  <mat-nav-list>
+    <a mat-list-item *ngFor="let cat of categories | slice:0:6" (click)="setCategory(cat.id)">
+      <mat-icon matListItemIcon [style.color]="cat.color">{{ cat.icon }}</mat-icon>
+      <div matListItemTitle>{{ cat.label }}</div>
+    </a>
+  </mat-nav-list>
+
+  <div class="about-section">
+    <p><strong>CampusNav</strong> • CUTM Paralakhemundi</p>
+    <p class="tech-stack">Angular 17 • Spring Boot 3 • BLE Fusion</p>
+    <p class="gps-free">🚫 100% GPS-Free Indoor Positioning</p>
+  </div>
+</div>

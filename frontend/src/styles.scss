@@ -1,0 +1,243 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// ============================================================
+// CUTM CampusNav — Light Mode Only Design System
+// Institutional blue + teal, clean academic interface
+// ============================================================
+
+// Design Tokens
+$primary:         #1565C0;
+$primary-light:   #1976D2;
+$primary-dark:    #0D47A1;
+$secondary:       #00897B;
+$secondary-light: #4DB6AC;
+
+$bg-page:         #F5F7FA;
+$bg-card:         #FFFFFF;
+$bg-surface:      #F0F2F5;
+
+$text-primary:    #1A1A2E;
+$text-secondary:  #5F6368;
+$text-hint:       #9AA0A6;
+
+$success:         #2E7D32;
+$warning:         #F57F17;
+$error:           #C62828;
+$info:            #1565C0;
+
+$border:          #E0E0E0;
+$shadow:          rgba(0,0,0,0.08);
+$radius:          12px;
+
+// Material Theme — Light Only (Institutional Blue)
+$campus-primary: mat.define-palette(mat.$blue-palette, 800, 600, 900);
+$campus-accent: mat.define-palette(mat.$teal-palette, 600, 400, 800);
+$campus-warn: mat.define-palette(mat.$red-palette, 800);
+
+$campus-theme: mat.define-light-theme((
+  color: (
+    primary: $campus-primary,
+    accent: $campus-accent,
+    warn: $campus-warn,
+  ),
+  typography: mat.define-typography-config(
+    $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+  ),
+  density: 0
+));
+
+@include mat.all-component-themes($campus-theme);
+
+// ============================================================
+// Global Styles
+// ============================================================
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  overflow: hidden;
+  background-color: $bg-page;
+  color: $text-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ============================================================
+// Leaflet Map
+// ============================================================
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+.building-tooltip {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: $text-primary;
+  box-shadow: 0 2px 6px $shadow;
+}
+
+// ============================================================
+// Cards & Surfaces
+// ============================================================
+
+.campus-card {
+  background: $bg-card;
+  border-radius: $radius;
+  border: 1px solid $border;
+  box-shadow: 0 2px 8px $shadow;
+  padding: 16px;
+}
+
+.campus-card-elevated {
+  @extend .campus-card;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+// ============================================================
+// Position Confidence States
+// ============================================================
+
+.confidence-confirmed {
+  color: $success;
+  &::before { content: '●'; margin-right: 6px; }
+}
+.confidence-estimated {
+  color: $warning;
+  &::before { content: '●'; margin-right: 6px; }
+}
+.confidence-uncertain {
+  color: $error;
+  &::before { content: '●'; margin-right: 6px; }
+}
+
+// ============================================================
+// Navigation Route
+// ============================================================
+
+@keyframes route-dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.animated-route {
+  animation: route-dash 0.5s linear infinite;
+}
+
+.route-marker {
+  border: none;
+  background: none;
+  .inner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  &.start .inner { background: $success; }
+  &.end .inner { background: $error; }
+}
+
+// ============================================================
+// Position Indicator (Blue pulsing dot)
+// ============================================================
+
+.position-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: $primary-light;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 0 rgba($primary-light, 0.4);
+  animation: position-pulse 2s infinite;
+}
+
+@keyframes position-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(25, 118, 210, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(25, 118, 210, 0); }
+}
+
+// ============================================================
+// Custom Marker Styling
+// ============================================================
+
+.custom-marker {
+  background: none !important;
+  border: none !important;
+}
+
+// ============================================================
+// Material Overrides for Light Mode
+// ============================================================
+
+.mat-mdc-card {
+  border-radius: $radius !important;
+  box-shadow: 0 2px 8px $shadow !important;
+}
+
+.mat-toolbar {
+  background: $bg-card !important;
+  color: $text-primary !important;
+  border-bottom: 1px solid $border;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  border-radius: 8px !important;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.mat-mdc-chip {
+  border-radius: 20px !important;
+}
+
+// ============================================================
+// Scrollbar
+// ============================================================
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 3px;
+  &:hover { background: rgba(0,0,0,0.25); }
+}
+
+// ============================================================
+// Responsive
+// ============================================================
+
+@media (max-width: 600px) {
+  .mat-toolbar {
+    height: 56px !important;
+  }
+}
+
+// ============================================================
+// Accessibility (always active in light mode)
+// ============================================================
+
+*:focus-visible {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
+}
+
+button, a, [role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}

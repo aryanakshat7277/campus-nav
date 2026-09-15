@@ -1,0 +1,47 @@
+<div class="map-container">
+  <div id="map"></div>
+  
+  <div class="overlay-top">
+    <app-search-bar></app-search-bar>
+    <app-category-filter></app-category-filter>
+
+    <!-- Quick Navigation Action Bar -->
+    <div class="quick-action-bar">
+      <a routerLink="/navigate" class="quick-pill primary" matTooltip="GPS-Free Indoor Navigation (Aryabhatta Block)">
+        <mat-icon>navigation</mat-icon>
+        <span>Indoor Nav</span>
+      </a>
+      <a routerLink="/qr-scanner" class="quick-pill teal" matTooltip="Scan Campus Wall QR Checkpoint">
+        <mat-icon>qr_code_scanner</mat-icon>
+        <span>Scan QR</span>
+      </a>
+      <a routerLink="/emergency" class="quick-pill emergency" matTooltip="Immediate Evacuation & Medical Aid">
+        <mat-icon>crisis_alert</mat-icon>
+        <span>Emergency</span>
+      </a>
+      <a routerLink="/visitor" class="quick-pill purple" matTooltip="Guided Campus Highlights for Visitors">
+        <mat-icon>tour</mat-icon>
+        <span>Visitor Tour</span>
+      </a>
+      <a routerLink="/nearby" class="quick-pill orange" matTooltip="Find Nearest Restrooms, ATMs, Water & Food">
+        <mat-icon>near_me</mat-icon>
+        <span>Nearby</span>
+      </a>
+      <a routerLink="/route-options" class="quick-pill gray" matTooltip="Routing Preferences & Mobility Profiles">
+        <mat-icon>tune</mat-icon>
+        <span>Preferences</span>
+      </a>
+    </div>
+  </div>
+  
+  <div class="overlay-right" *ngIf="hasMultiFloor">
+    <app-floor-selector [currentFloor]="currentFloor" (floorChange)="onFloorChange($event)"></app-floor-selector>
+  </div>
+
+  <!-- Floating Simulation Control -->
+  <div class="floating-demo-wrap">
+    <app-demo-control></app-demo-control>
+  </div>
+  
+  <app-nav-panel></app-nav-panel>
+</div>

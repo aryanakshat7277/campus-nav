@@ -1,0 +1,13 @@
+.category-scroll {
+  overflow-x: auto;
+  padding: 8px 16px;
+  white-space: nowrap;
+  background: transparent;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+mat-chip-option {
+  margin-right: 8px;
+}

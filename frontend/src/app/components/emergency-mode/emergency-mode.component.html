@@ -1,0 +1,77 @@
+<div class="emergency-view">
+  <header class="emergency-header">
+    <button mat-icon-button routerLink="/" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="header-titles">
+      <h2>🚨 Emergency Mode</h2>
+      <p>High-priority nearest exit, medical, and security routing with zero delays</p>
+    </div>
+  </header>
+
+  <div class="emergency-content">
+    <!-- 4 Major Emergency Action Buttons -->
+    <div class="emergency-grid">
+      <div 
+        *ngFor="let e of emergencies" 
+        class="emergency-action-card" 
+        [class.selected]="selectedEmergency?.id === e.id"
+        (click)="selectEmergency(e)">
+        <div class="card-icon-wrap">
+          <mat-icon>{{ e.icon }}</mat-icon>
+        </div>
+        <div class="card-text">
+          <h3>{{ e.title }}</h3>
+          <span class="category-tag">{{ e.category }}</span>
+          <p class="destination-name">{{ e.destination }}</p>
+          <div class="metrics">
+            <span><mat-icon>straighten</mat-icon> {{ e.distanceMeters }}m</span>
+            <span><mat-icon>schedule</mat-icon> ~{{ e.estimatedMinutes }} min</span>
+          </div>
+        </div>
+        <button mat-raised-button color="warn" class="trigger-btn">
+          Select <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Emergency Route Plan -->
+    <div *ngIf="selectedEmergency" class="active-emergency-card">
+      <mat-card class="route-card">
+        <div class="route-header">
+          <mat-icon class="alert-icon">emergency</mat-icon>
+          <div>
+            <h3>IMMEDIATE EVACUATION ROUTE: {{ selectedEmergency.destination }}</h3>
+            <p>{{ selectedEmergency.locationDetails }} • Total Distance: {{ selectedEmergency.distanceMeters }}m</p>
+          </div>
+          <button mat-raised-button color="warn" class="launch-evac-btn" (click)="startEmergencyRoute(selectedEmergency)">
+            <mat-icon>navigation</mat-icon> Launch Evacuation Turn-by-Turn
+          </button>
+        </div>
+
+        <div class="evacuation-steps">
+          <h4>Step-by-Step Evacuation Path:</h4>
+          <ol>
+            <li *ngFor="let step of selectedEmergency.steps">
+              {{ step }}
+            </li>
+          </ol>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Campus Emergency Numbers & Helpline -->
+    <div class="helpline-section">
+      <h3>📞 Campus Emergency Contacts</h3>
+      <div class="helpline-grid">
+        <div *ngFor="let phone of campusHelplines" class="helpline-item">
+          <mat-icon color="primary">{{ phone.icon }}</mat-icon>
+          <div class="phone-info">
+            <span class="phone-name">{{ phone.name }}</span>
+            <a [href]="'tel:' + phone.number" class="phone-number">{{ phone.number }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

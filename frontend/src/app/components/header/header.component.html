@@ -1,0 +1,67 @@
+<mat-toolbar color="primary" class="main-toolbar">
+  <button mat-icon-button (click)="menuClick.emit()" aria-label="Toggle navigation menu" matTooltip="Menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  
+  <a routerLink="/" class="brand-link">
+    <span class="brand-icon">🧭</span>
+    <span class="title">CampusNav</span>
+    <span class="campus-sub">CUTM Paralakhemundi</span>
+  </a>
+
+  <div class="nav-links">
+    <a mat-button routerLink="/dashboard" routerLinkActive="active" class="dashboard-nav-btn">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span>
+    </a>
+    <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon>map</mat-icon>
+      <span>Map</span>
+    </a>
+    <a mat-button routerLink="/navigate" routerLinkActive="active">
+      <mat-icon>navigation</mat-icon>
+      <span>Indoor Nav</span>
+    </a>
+    <a mat-button routerLink="/qr-scanner" routerLinkActive="active">
+      <mat-icon>qr_code_scanner</mat-icon>
+      <span>QR Checkpoint</span>
+    </a>
+    <a mat-button routerLink="/nearby" routerLinkActive="active">
+      <mat-icon>place</mat-icon>
+      <span>Nearby</span>
+    </a>
+    <a mat-button routerLink="/emergency" routerLinkActive="active" class="emergency-nav-btn">
+      <mat-icon>warning</mat-icon>
+      <span>🚨 Emergency</span>
+    </a>
+    <a mat-button routerLink="/visitor" routerLinkActive="active">
+      <mat-icon>tour</mat-icon>
+      <span>Visitor</span>
+    </a>
+    <a mat-button routerLink="/admin/diagnostics" routerLinkActive="active">
+      <mat-icon>sensors</mat-icon>
+      <span>Diagnostics</span>
+    </a>
+    <a mat-button routerLink="/admin" routerLinkActive="active">
+      <mat-icon>admin_panel_settings</mat-icon>
+      <span>Admin</span>
+    </a>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="header-status">
+    <button mat-stroked-button color="accent" class="sim-toggle-btn" (click)="toggleSimulation()" [matTooltip]="isSimulating ? 'Stop walking simulation' : 'Start walking simulation demo'">
+      <mat-icon>{{ isSimulating ? 'stop_circle' : 'play_circle' }}</mat-icon>
+      <span>{{ isSimulating ? 'Stop Demo' : 'Live Demo' }}</span>
+    </button>
+
+    <app-position-indicator></app-position-indicator>
+
+    <button mat-icon-button class="fullscreen-toggle-btn" (click)="toggleFullscreen()" [matTooltip]="isFullscreen ? 'Exit Full Screen' : 'Full Screen View'">
+      <mat-icon>{{ isFullscreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+    </button>
+
+    <mat-icon *ngIf="isAccessible" class="access-icon" title="Accessible routing active">accessible</mat-icon>
+  </div>
+</mat-toolbar>
