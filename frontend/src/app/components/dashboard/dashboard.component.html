@@ -39,7 +39,7 @@
           </span>
           <span class="telemetry-pill confidence" [ngClass]="currentPosition?.confidenceState || 'CONFIRMED'">
             <mat-icon class="pill-icon">radar</mat-icon>
-            {{ currentPosition?.confidenceState || 'CONFIRMED' }} ({{ ((currentPosition?.confidence || 0.94) * 100) | number:'1.0-0' }}%)
+            {{ currentPosition?.confidenceState || 'CONFIRMED' }} ({{ confidencePct }}%)
           </span>
           <span class="telemetry-pill no-gps">
             <mat-icon class="pill-icon">location_off</mat-icon>
@@ -47,14 +47,244 @@
           </span>
           <span class="telemetry-pill location-pill" *ngIf="currentPosition">
             <mat-icon class="pill-icon">near_me</mat-icon>
-            {{ currentPosition.buildingName || 'Aryabhatta Block' }} • Level {{ currentPosition.floorNumber ?? 0 }}
+            {{ currentPosition.buildingName || 'Aryabhatta Block' }} • Level {{ previewFloor }}
           </span>
         </div>
-        <h1 class="hero-heading">Campus Operations &amp; Feature Launchpad</h1>
+        <h1 class="hero-heading">Campus Operations &amp; Graphical Telemetry Hub</h1>
         <p class="hero-lead">
-          Centralized navigation portal connecting 2D geospatial campus grounds, 3-floor interior CAD positioning, 
-          real-time sensor fusion telemetry, and emergency evacuation protocols across CUTM Paralakhemundi.
+          Real-time navigation launchpad connecting 2D geospatial campus grounds, 3-floor interior CAD positioning, 
+          continuous sensor fusion telemetry, and emergency evacuation protocols across CUTM Paralakhemundi.
         </p>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         BRAND NEW: REAL-TIME SPATIAL CAD & TELEMETRY OPERATIONS MATRIX
+         ========================================================================= -->
+    <div class="spatial-matrix-section">
+      <!-- PANEL 1: SENSOR FUSION DIAL & STREAM BREAKDOWN -->
+      <div class="hud-panel fusion-dial-panel">
+        <div class="hud-panel-header">
+          <mat-icon class="hud-header-icon">speed</mat-icon>
+          <div class="hud-title-group">
+            <span class="hud-title">Multi-Sensor Kalman Fusion</span>
+            <span class="hud-sub">Weighted Confidence State</span>
+          </div>
+          <span class="confidence-badge" [ngClass]="currentPosition?.confidenceState || 'CONFIRMED'">
+            {{ currentPosition?.confidenceState || 'CONFIRMED' }}
+          </span>
+        </div>
+
+        <div class="dial-center-area">
+          <div class="speedometer-wrap">
+            <svg class="speedometer-svg" viewBox="0 0 200 120">
+              <!-- Background Arc -->
+              <path d="M 20 105 A 80 80 0 0 1 180 105" fill="none" stroke="#E2E8F0" stroke-width="16" stroke-linecap="round"/>
+              <!-- Active Progress Arc (94%) -->
+              <path d="M 20 105 A 80 80 0 0 1 180 105" fill="none" stroke="#1565C0" stroke-width="16" stroke-linecap="round"
+                    stroke-dasharray="251" [attr.stroke-dashoffset]="251 - (251 * (confidencePct / 100))" class="arc-progress"/>
+              <!-- Needle Pointer -->
+              <line x1="100" y1="105" x2="100" y2="40" stroke="#0F172A" stroke-width="3" stroke-linecap="round"
+                    [style.transform]="'rotate(' + ((confidencePct / 100) * 180 - 90) + 'deg)'" class="dial-needle"/>
+              <circle cx="100" cy="105" r="7" fill="#1565C0"/>
+            </svg>
+            <div class="dial-reading">
+              <span class="dial-pct">{{ confidencePct }}%</span>
+              <span class="dial-label">Fused Confidence</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sensor-bars-breakdown">
+          <div class="sensor-bar-row">
+            <div class="bar-meta">
+              <span class="sensor-name">Wi-Fi 802.11mc RTT (6 APs)</span>
+              <span class="sensor-val">91%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill rtt" style="width: 91%"></div></div>
+          </div>
+
+          <div class="sensor-bar-row">
+            <div class="bar-meta">
+              <span class="sensor-name">Bluetooth LE Beacons (6 Units)</span>
+              <span class="sensor-val">82%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill ble" style="width: 82%"></div></div>
+          </div>
+
+          <div class="sensor-bar-row">
+            <div class="bar-meta">
+              <span class="sensor-name">Phone IMU Sensors (Dead-Reckoning)</span>
+              <span class="sensor-val">78%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill imu" style="width: 78%"></div></div>
+          </div>
+
+          <div class="sensor-bar-row">
+            <div class="bar-meta">
+              <span class="sensor-name">Optical QR Ground-Truth Anchor</span>
+              <span class="sensor-val">100% Snap</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill qr" style="width: 100%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: VECTOR ARCHITECTURAL CAD MINI-MAP WITH LIVE COMPASS -->
+      <div class="hud-panel cad-map-panel">
+        <div class="hud-panel-header">
+          <mat-icon class="hud-header-icon">layers</mat-icon>
+          <div class="hud-title-group">
+            <span class="hud-title">Aryabhatta Block Architectural CAD</span>
+            <span class="hud-sub">Vector Floorplan • Level {{ previewFloor }}</span>
+          </div>
+
+          <div class="floor-pill-selector">
+            <button class="floor-pill" [class.active]="previewFloor === 0" (click)="selectFloorPreview(0)">GF</button>
+            <button class="floor-pill" [class.active]="previewFloor === 1" (click)="selectFloorPreview(1)">L1</button>
+            <button class="floor-pill" [class.active]="previewFloor === 2" (click)="selectFloorPreview(2)">L2</button>
+          </div>
+        </div>
+
+        <div class="cad-viewport-box">
+          <svg class="mini-cad-svg" viewBox="0 0 360 180">
+            <defs>
+              <pattern id="miniGrid" width="15" height="15" patternUnits="userSpaceOnUse">
+                <path d="M 15 0 L 0 0 0 15" fill="none" stroke="#F1F5F9" stroke-width="1"/>
+              </pattern>
+              <linearGradient id="routeGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#1565C0"/>
+                <stop offset="50%" stop-color="#00897B"/>
+                <stop offset="100%" stop-color="#1565C0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- CAD Blueprint Grid -->
+            <rect width="360" height="180" fill="url(#miniGrid)"/>
+
+            <!-- Building Exterior Outline -->
+            <rect x="20" y="20" width="320" height="140" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+
+            <!-- Corridors -->
+            <rect x="35" y="70" width="290" height="30" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+            <rect x="160" y="30" width="30" height="120" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+
+            <!-- Rooms GF/L1/L2 -->
+            <rect x="35" y="30" width="55" height="35" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1" rx="4"/>
+            <text x="62" y="52" font-size="9" font-weight="700" fill="#1565C0" text-anchor="middle">A-001</text>
+
+            <rect x="95" y="30" width="55" height="35" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1" rx="4"/>
+            <text x="122" y="52" font-size="9" font-weight="700" fill="#1565C0" text-anchor="middle">Foyer</text>
+
+            <rect x="200" y="30" width="60" height="35" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1" rx="4"/>
+            <text x="230" y="52" font-size="9" font-weight="700" fill="#00897B" text-anchor="middle">Lift Shaft</text>
+
+            <rect x="265" y="30" width="60" height="35" fill="#FEF2F2" stroke="#FECACA" stroke-width="1" rx="4"/>
+            <text x="295" y="52" font-size="9" font-weight="700" fill="#C62828" text-anchor="middle">Fire Exit</text>
+
+            <rect x="35" y="105" width="60" height="35" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" rx="4"/>
+            <text x="65" y="127" font-size="9" font-weight="700" fill="#64748B" text-anchor="middle">Admin</text>
+
+            <rect x="100" y="105" width="55" height="35" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" rx="4"/>
+            <text x="127" y="127" font-size="9" font-weight="700" fill="#64748B" text-anchor="middle">Stairs</text>
+
+            <rect x="200" y="105" width="125" height="35" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5" rx="4"/>
+            <text x="262" y="127" font-size="9.5" font-weight="800" fill="#1565C0" text-anchor="middle">Lab C-204 (Destination)</text>
+
+            <!-- Animated Route Polyline -->
+            <path d="M 62 52 L 122 85 L 230 85 L 262 105" fill="none" stroke="url(#routeGlow)" stroke-width="3.5"
+                  stroke-linecap="round" stroke-dasharray="6,4" class="svg-route-path"/>
+
+            <!-- User Avatar with Rotating Compass Flashlight Beam -->
+            <g [attr.transform]="'translate(122, 85)'">
+              <!-- Compass Flashlight Beam -->
+              <path d="M 0 0 L -25 -55 A 60 60 0 0 1 25 -55 Z" fill="rgba(21, 101, 192, 0.18)"
+                    [style.transform]="'rotate(' + liveHeading + 'deg)'" class="flashlight-cone"/>
+              <!-- User Pulse Circle -->
+              <circle cx="0" cy="0" r="10" fill="rgba(21, 101, 192, 0.25)" class="user-pulse-ring"/>
+              <circle cx="0" cy="0" r="6" fill="#1565C0" stroke="#FFFFFF" stroke-width="2"/>
+            </g>
+
+            <!-- Destination Target Pin -->
+            <g transform="translate(262, 105)">
+              <circle cx="0" cy="0" r="8" fill="rgba(198, 40, 40, 0.25)" class="dest-pulse-ring"/>
+              <circle cx="0" cy="0" r="5" fill="#C62828" stroke="#FFFFFF" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="cad-footer-strip">
+          <span class="cad-loc-tag">
+            <mat-icon>place</mat-icon>
+            Aryabhatta East Wing • Heading {{ liveHeading }}° ({{ cardinalDirection }})
+          </span>
+          <button mat-button class="cad-zoom-btn" (click)="navigateTo('/navigate')">
+            <span>Explore 3D CAD</span>
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- PANEL 3: TELEMETRY SENSORS & DEMO SIMULATION CONTROLS -->
+      <div class="hud-panel telemetry-hud-panel">
+        <div class="hud-panel-header">
+          <mat-icon class="hud-header-icon">compass_calibration</mat-icon>
+          <div class="hud-title-group">
+            <span class="hud-title">Inertial Telemetry HUD</span>
+            <span class="hud-sub">IMU &amp; Simulation Engine</span>
+          </div>
+          <span class="sim-status-chip" [class.active]="isSimulating">
+            {{ isSimulating ? 'WALKING' : 'IDLE' }}
+          </span>
+        </div>
+
+        <div class="telemetry-stats-grid">
+          <div class="stat-pill-box">
+            <div class="box-icon blue"><mat-icon>directions_walk</mat-icon></div>
+            <div class="box-text">
+              <span class="box-value">{{ liveStepCount }}</span>
+              <span class="box-label">Step Count</span>
+            </div>
+          </div>
+
+          <div class="stat-pill-box">
+            <div class="box-icon teal"><mat-icon>explore</mat-icon></div>
+            <div class="box-text">
+              <span class="box-value">{{ liveHeading }}°</span>
+              <span class="box-label">{{ cardinalDirection }}</span>
+            </div>
+          </div>
+
+          <div class="stat-pill-box">
+            <div class="box-icon purple"><mat-icon>speed</mat-icon></div>
+            <div class="box-text">
+              <span class="box-value">{{ liveAcceleration }} m/s²</span>
+              <span class="box-label">Tri-Axial Accel</span>
+            </div>
+          </div>
+
+          <div class="stat-pill-box">
+            <div class="box-icon orange"><mat-icon>radar</mat-icon></div>
+            <div class="box-text">
+              <span class="box-value">{{ rttDistanceMeters }} m</span>
+              <span class="box-label">RTT Ranging</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-sim-controls">
+          <span class="sim-speed-label">Demo Simulation Speed:</span>
+          <div class="speed-btn-group">
+            <button class="speed-btn" [class.active]="simSpeed === 0.5" (click)="setSpeed(0.5)">0.5x</button>
+            <button class="speed-btn" [class.active]="simSpeed === 1" (click)="setSpeed(1)">1.0x</button>
+            <button class="speed-btn" [class.active]="simSpeed === 2" (click)="setSpeed(2)">2.0x</button>
+          </div>
+
+          <button mat-flat-button color="primary" class="full-sim-btn" (click)="toggleSimulation()">
+            <mat-icon>{{ isSimulating ? 'pause_circle' : 'play_circle' }}</mat-icon>
+            <span>{{ isSimulating ? 'Pause Walk' : 'Start Simulation' }}</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -153,7 +383,7 @@
     </div>
   </section>
 
-  <!-- FEATURE MODULES GRID -->
+  <!-- FEATURE MODULES GRID (14 CARDS WITH DEDICATED VECTOR GRAPHIC PREVIEWS) -->
   <section class="modules-grid-section">
     <div class="section-meta-header">
       <div class="count-text">
@@ -171,6 +401,167 @@
            [style.--accent-color]="mod.accentColor"
            (click)="navigateTo(mod.route)">
         
+        <!-- CARD TOP GRAPHICAL VECTOR PREVIEW BANNER -->
+        <div class="card-graphic-banner" [style.background-color]="mod.accentColor + '0A'">
+          <!-- 1. Indoor CAD Navigation Preview Graphic -->
+          <svg *ngIf="mod.id === 'indoor-nav'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="10" width="260" height="60" rx="6" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+            <line x1="10" y1="40" x2="270" y2="40" stroke="#DBEAFE" stroke-width="16"/>
+            <path d="M 30 40 L 110 40 L 110 25 L 210 25 L 210 55 L 250 55" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" stroke-dasharray="5,3"/>
+            <circle cx="30" cy="40" r="5" fill="#1565C0"/>
+            <circle cx="250" cy="55" r="6" fill="#C62828"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#1565C0" text-anchor="middle">Aryabhatta 3-Floor Blueprint</text>
+          </svg>
+
+          <!-- 2. Campus 2D Map Preview Graphic -->
+          <svg *ngIf="mod.id === 'campus-map'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5"/>
+            <circle cx="140" cy="40" r="28" fill="#DCFCE7"/>
+            <path d="M 20 60 Q 140 10 260 50" fill="none" stroke="#64748B" stroke-width="4" stroke-linecap="round"/>
+            <rect x="45" y="22" width="35" height="22" rx="3" fill="#1565C0"/>
+            <rect x="195" y="20" width="40" height="25" rx="3" fill="#00897B"/>
+            <circle cx="140" cy="40" r="6" fill="#EA580C"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#15803D" text-anchor="middle">56 Geo-Coded Locations • 12 Blocks</text>
+          </svg>
+
+          <!-- 3. QR Scanner Viewfinder Graphic -->
+          <svg *ngIf="mod.id === 'qr-scanner'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.5"/>
+            <!-- Reticle Crosshairs -->
+            <path d="M 110 25 L 125 25 M 110 25 L 110 40 M 170 25 L 155 25 M 170 25 L 170 40 M 110 55 L 125 55 M 110 55 L 110 40 M 170 55 L 155 55 M 170 55 L 170 40"
+                  fill="none" stroke="#00897B" stroke-width="2.5"/>
+            <line x1="105" y1="40" x2="175" y2="40" stroke="#14B8A6" stroke-width="2" stroke-dasharray="3,2"/>
+            <circle cx="140" cy="40" r="3" fill="#0F766E"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#0F766E" text-anchor="middle">Optical Viewfinder • 100% Snap</text>
+          </svg>
+
+          <!-- 4. Route Options Comparison Graphic -->
+          <svg *ngIf="mod.id === 'route-options'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#FAF5FF" stroke="#E9D5FF" stroke-width="1.5"/>
+            <path d="M 30 50 L 100 50 L 140 25 L 250 25" fill="none" stroke="#7B1FA2" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 30 55 C 80 55 120 40 180 40 L 250 40" fill="none" stroke="#1565C0" stroke-width="2" stroke-dasharray="4,3" stroke-linecap="round"/>
+            <circle cx="30" cy="50" r="4" fill="#7B1FA2"/>
+            <circle cx="250" cy="25" r="5" fill="#7B1FA2"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#7E22CE" text-anchor="middle">Wheelchair Ramps • Elevator Priority</text>
+          </svg>
+
+          <!-- 5. Emergency Evacuation Graphic -->
+          <svg *ngIf="mod.id === 'emergency'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#FEF2F2" stroke="#FECACA" stroke-width="1.5"/>
+            <circle cx="60" cy="40" r="14" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+            <text x="60" y="44" font-size="12" font-weight="800" fill="#DC2626" text-anchor="middle">🚨</text>
+            <path d="M 90 40 L 210 40 M 200 32 L 215 40 L 200 48" fill="none" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+            <rect x="225" y="24" width="28" height="32" rx="3" fill="#16A34A"/>
+            <text x="239" y="44" font-size="11" fill="#FFFFFF" text-anchor="middle">🚪</text>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#B91C1C" text-anchor="middle">Critical Exit &amp; Medical Aid</text>
+          </svg>
+
+          <!-- 6. Nearby Facilities Distance Rings -->
+          <svg *ngIf="mod.id === 'nearby'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+            <circle cx="140" cy="38" r="12" fill="none" stroke="#FDBA74" stroke-width="1"/>
+            <circle cx="140" cy="38" r="24" fill="none" stroke="#FDBA74" stroke-width="1" stroke-dasharray="3,3"/>
+            <circle cx="140" cy="38" r="5" fill="#EA580C"/>
+            <circle cx="115" cy="28" r="4" fill="#1565C0"/>
+            <circle cx="170" cy="48" r="4" fill="#00897B"/>
+            <circle cx="155" cy="22" r="4" fill="#7B1FA2"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#C2410C" text-anchor="middle">Proximity Sorter • Live Distance</text>
+          </svg>
+
+          <!-- 7. Guided Visitor Tour Graphic -->
+          <svg *ngIf="mod.id === 'visitor'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#FAF5FF" stroke="#E9D5FF" stroke-width="1.5"/>
+            <path d="M 35 48 Q 90 18 140 45 T 245 32" fill="none" stroke="#7B1FA2" stroke-width="2.5" stroke-dasharray="5,4"/>
+            <circle cx="35" cy="48" r="5" fill="#7B1FA2"/>
+            <circle cx="140" cy="45" r="5" fill="#1565C0"/>
+            <circle cx="245" cy="32" r="6" fill="#00897B"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#7E22CE" text-anchor="middle">35-Minute Curated Heritage Tour</text>
+          </svg>
+
+          <!-- 8. Hardware Signal Diagnostics Radar -->
+          <svg *ngIf="mod.id === 'diagnostics'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.5"/>
+            <circle cx="140" cy="38" r="26" fill="#ECFDF5" stroke="#00897B" stroke-width="1.5"/>
+            <circle cx="140" cy="38" r="16" fill="none" stroke="#A7F3D0" stroke-width="1"/>
+            <line x1="140" y1="12" x2="140" y2="64" stroke="#A7F3D0" stroke-width="1"/>
+            <line x1="114" y1="38" x2="166" y2="38" stroke="#A7F3D0" stroke-width="1"/>
+            <line x1="140" y1="38" x2="160" y2="20" stroke="#00897B" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="152" cy="28" r="2.5" fill="#047857"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#0F766E" text-anchor="middle">360° RTT Radar • 3D Gimbal</text>
+          </svg>
+
+          <!-- 9. BLE Beacons Transmitter Array -->
+          <svg *ngIf="mod.id === 'beacons'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+            <circle cx="140" cy="38" r="6" fill="#1565C0"/>
+            <path d="M 125 28 A 16 16 0 0 0 125 48 M 155 28 A 16 16 0 0 1 155 48" fill="none" stroke="#1565C0" stroke-width="2" stroke-linecap="round"/>
+            <path d="M 115 20 A 28 28 0 0 0 115 56 M 165 20 A 28 28 0 0 1 165 56" fill="none" stroke="#60A5FA" stroke-width="1.5" stroke-linecap="round"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#1D4ED8" text-anchor="middle">6 Hardware Transmitters Online</text>
+          </svg>
+
+          <!-- 10. QR Token Registry -->
+          <svg *ngIf="mod.id === 'qr-admin'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1.5"/>
+            <rect x="122" y="18" width="36" height="36" rx="4" fill="#FFFFFF" stroke="#00897B" stroke-width="1.5"/>
+            <rect x="127" y="23" width="8" height="8" fill="#00897B"/>
+            <rect x="145" y="23" width="8" height="8" fill="#00897B"/>
+            <rect x="127" y="41" width="8" height="8" fill="#00897B"/>
+            <rect x="140" y="36" width="5" height="5" fill="#00897B"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#0F766E" text-anchor="middle">Millimeter Cryptographic Plaques</text>
+          </svg>
+
+          <!-- 11. Buildings & CAD Hierarchy -->
+          <svg *ngIf="mod.id === 'buildings'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+            <!-- 3 Stacked Isometric Floors -->
+            <polygon points="140,18 190,30 140,42 90,30" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1.5"/>
+            <polygon points="140,28 190,40 140,52 90,40" fill="#CBD5E1" stroke="#64748B" stroke-width="1.5"/>
+            <polygon points="140,38 190,50 140,62 90,50" fill="#94A3B8" stroke="#475569" stroke-width="1.5"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#334155" text-anchor="middle">3-Level Structural Model</text>
+          </svg>
+
+          <!-- 12. Landmarks Directory -->
+          <svg *ngIf="mod.id === 'landmarks'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.5"/>
+            <!-- Classical University Colonnade / Portico -->
+            <polygon points="140,16 185,28 95,28" fill="#F59E0B"/>
+            <line x1="105" y1="28" x2="105" y2="52" stroke="#D97706" stroke-width="3"/>
+            <line x1="122" y1="28" x2="122" y2="52" stroke="#D97706" stroke-width="3"/>
+            <line x1="140" y1="28" x2="140" y2="52" stroke="#D97706" stroke-width="3"/>
+            <line x1="158" y1="28" x2="158" y2="52" stroke="#D97706" stroke-width="3"/>
+            <line x1="175" y1="28" x2="175" y2="52" stroke="#D97706" stroke-width="3"/>
+            <line x1="90" y1="52" x2="190" y2="52" stroke="#B45309" stroke-width="2"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#B45309" text-anchor="middle">Contextual Pedestrian Anchors</text>
+          </svg>
+
+          <!-- 13. Route Closures & Obstacles -->
+          <svg *ngIf="mod.id === 'closures'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#FEF2F2" stroke="#FECACA" stroke-width="1.5"/>
+            <!-- Hazard Barricade -->
+            <rect x="90" y="24" width="100" height="24" rx="3" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+            <path d="M 100 48 L 115 24 M 125 48 L 140 24 M 150 48 L 165 24 M 175 48 L 190 24" stroke="#EF4444" stroke-width="3"/>
+            <line x1="100" y1="48" x2="95" y2="56" stroke="#991B1B" stroke-width="2"/>
+            <line x1="180" y1="48" x2="185" y2="56" stroke="#991B1B" stroke-width="2"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#B91C1C" text-anchor="middle">Dynamic A* Detour Recalculation</text>
+          </svg>
+
+          <!-- 14. Locations Master Database -->
+          <svg *ngIf="mod.id === 'locations-admin'" viewBox="0 0 280 80" class="banner-svg">
+            <rect x="10" y="8" width="260" height="64" rx="6" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+            <!-- Mini Data Table Graphic -->
+            <rect x="60" y="20" width="160" height="34" rx="3" fill="#FFFFFF" stroke="#93C5FD" stroke-width="1"/>
+            <line x1="60" y1="31" x2="220" y2="31" stroke="#DBEAFE" stroke-width="1"/>
+            <line x1="60" y1="42" x2="220" y2="42" stroke="#DBEAFE" stroke-width="1"/>
+            <circle cx="75" cy="26" r="2.5" fill="#1565C0"/>
+            <circle cx="75" cy="36.5" r="2.5" fill="#1565C0"/>
+            <circle cx="75" cy="47" r="2.5" fill="#1565C0"/>
+            <line x1="88" y1="26" x2="160" y2="26" stroke="#94A3B8" stroke-width="2"/>
+            <line x1="88" y1="36.5" x2="140" y2="36.5" stroke="#94A3B8" stroke-width="2"/>
+            <line x1="88" y1="47" x2="180" y2="47" stroke="#94A3B8" stroke-width="2"/>
+            <text x="140" y="72" font-size="8.5" font-weight="700" fill="#1D4ED8" text-anchor="middle">56 Records • H2 Campus DB</text>
+          </svg>
+        </div>
+
         <div class="card-header">
           <div class="icon-avatar" [style.background-color]="mod.accentColor + '14'" [style.color]="mod.iconColor">
             <mat-icon>{{ mod.icon }}</mat-icon>

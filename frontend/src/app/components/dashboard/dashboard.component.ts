@@ -12,7 +12,10 @@ import { Subscription } from 'rxjs';
 import { MapService } from '../../services/map.service';
 import { IndoorPositionEngine } from '../../services/indoor-position.engine';
 import { DemoSimulationService } from '../../services/demo-simulation.service';
+import { SensorSimulationService } from '../../services/sensor-simulation.service';
+import { WifiSimulationService } from '../../services/wifi-simulation.service';
 import { IndoorPosition } from '../../models/indoor-position.model';
+import { PhoneSensorTelemetry } from '../../models/simulation.model';
 
 export interface DashboardModule {
   id: string;
@@ -55,6 +58,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isSimulating = false;
   totalLocations = 56;
   totalBuildings = 12;
+
+  // Real-time telemetry metrics for graphical HUD
+  liveStepCount = 142;
+  liveHeading = 92;
+  cardinalDirection = 'East (92°)';
+  liveAcceleration = 1.1;
+  confidencePct = 94;
+  previewFloor = 0;
+  simSpeed = 1;
+  activeAPCount = 6;
+  activeBeaconCount = 6;
+  rttDistanceMeters = 14.2;
 
   private subs = new Subscription();
 
@@ -286,6 +301,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public mapService: MapService,
     private positionEngine: IndoorPositionEngine,
     public demoService: DemoSimulationService,
+    private sensorService: SensorSimulationService,
+    private wifiService: WifiSimulationService,
     private router: Router
   ) {}
 
@@ -293,6 +310,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.positionEngine.getCurrentPosition().subscribe(pos => {
         this.currentPosition = pos;
+        if (pos) {
+          this.confidencePct = Math.round((pos.confidence || 0.94) * 100);
+          if (pos.floorNumber !== undefined && pos.floorNumber !== null) {
+            this.previewFloor = pos.floorNumber;
+          }
+        }
       })
     );
 
@@ -303,12 +326,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+      this.sensorService.getTelemetry().subscribe(t => {
+        if (t) {
+          this.liveStepCount = t.accelerometer.stepCount;
+          this.liveHeading = t.magnetometer.heading;
+          this.cardinalDirection = t.magnetometer.cardinalDirection;
+          this.liveAcceleration = t.accelerometer.acceleration;
+        }
+      })
+    );
+
+    this.subs.add(
       this.mapService.locations.subscribe(locs => {
         if (locs && locs.length > 0) {
           this.totalLocations = locs.length;
         }
       })
     );
+  }
+
+  setSpeed(speed: number) {
+    this.simSpeed = speed;
+    this.demoService.setSpeed(speed);
+  }
+
+  selectFloorPreview(floor: number) {
+    this.previewFloor = floor;
   }
 
   ngOnDestroy() {
