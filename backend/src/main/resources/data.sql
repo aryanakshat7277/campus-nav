@@ -57,8 +57,8 @@ INSERT INTO locations (id, name, category, building_id, floor, description, lati
 ('INT_16', 'Agri Intersection', 'indoor', null, 0, 'Agri Intersection at CUTM', 18.7795, 84.0948, null, true, true, 'agri,intersection', '8:00 AM - 8:00 PM', CURRENT_TIMESTAMP),
 ('INT_17', 'Staff Qtrs Intersection', 'indoor', null, 0, 'Staff Qtrs Intersection at CUTM', 18.7768, 84.0925, null, true, true, 'staff,qtrs,intersection', '8:00 AM - 8:00 PM', CURRENT_TIMESTAMP);
 
--- Insert alerts
+-- Insert alerts (disabled by default)
 INSERT INTO alerts (id, title, message, type, location_id, is_active, created_at) VALUES 
-('ALERT_1', 'Main Gate Construction', 'Construction work at the main gate.', 'warning', 'MAIN_GATE', true, CURRENT_TIMESTAMP),
-('ALERT_2', 'Aryabhatta Elevator Maintenance', 'The elevator is closed for maintenance.', 'closure', 'ARYABHATTA_GF', true, CURRENT_TIMESTAMP),
-('ALERT_3', 'Extended Library Hours', 'The central library will remain open until midnight.', 'info', 'LIBRARY_GF', true, CURRENT_TIMESTAMP);
+('ALERT_1', 'Main Gate Construction', 'Construction work at the main gate.', 'warning', 'MAIN_GATE', false, CURRENT_TIMESTAMP),
+('ALERT_2', 'Aryabhatta Elevator Maintenance', 'The elevator is closed for maintenance.', 'closure', 'ARYABHATTA_GF', false, CURRENT_TIMESTAMP),
+('ALERT_3', 'Extended Library Hours', 'The central library will remain open until midnight.', 'info', 'LIBRARY_GF', false, CURRENT_TIMESTAMP);

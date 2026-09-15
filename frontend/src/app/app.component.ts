@@ -4,13 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { AlertBannerComponent } from './components/alert-banner/alert-banner.component';
 import { ThemeService } from './services/theme.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatSidenavModule, HeaderComponent, SidebarComponent, AlertBannerComponent],
+  imports: [CommonModule, RouterOutlet, MatSidenavModule, HeaderComponent, SidebarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
